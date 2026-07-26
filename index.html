@@ -1,1242 +1,1031 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Harsh — AI & Web Developer</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #050810;
-    --surface: #0b1121;
-    --surface2: #111827;
-    --neon: #00d4ff;
-    --neon2: #7c3aed;
-    --accent: #f97316;
-    --text: #e2e8f0;
-    --muted: #64748b;
-    --border: rgba(0,212,255,0.15);
-    --glow: 0 0 20px rgba(0,212,255,0.3);
-  }
-
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    overflow-x: hidden;
-  }
-
-  /* --- NOISE OVERLAY --- */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.4;
-  }
-
-  /* --- NAVBAR --- */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.2rem 5%;
-    background: rgba(5,8,16,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .logo {
-    font-family: 'Space Mono', monospace;
-    font-size: 1rem;
-    color: var(--neon);
-    text-decoration: none;
-    letter-spacing: 0.05em;
-  }
-  .logo span { color: var(--accent); }
-
-  .nav-links {
-    display: flex;
-    gap: 2rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--neon); }
-
-  .nav-cta {
-    background: transparent;
-    border: 1px solid var(--neon);
-    color: var(--neon) !important;
-    padding: 0.5rem 1.2rem;
-    border-radius: 4px;
-    transition: background 0.2s, box-shadow 0.2s !important;
-  }
-  .nav-cta:hover {
-    background: rgba(0,212,255,0.1) !important;
-    box-shadow: var(--glow) !important;
-    color: var(--neon) !important;
-  }
-
-  /* --- HERO --- */
-  #hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 8rem 5% 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(0,212,255,0.07) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(124,58,237,0.08) 0%, transparent 60%);
-  }
-
-  .grid-lines {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 700px;
-  }
-
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(0,212,255,0.08);
-    border: 1px solid rgba(0,212,255,0.2);
-    color: var(--neon);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    padding: 0.4rem 0.9rem;
-    border-radius: 20px;
-    margin-bottom: 1.8rem;
-    letter-spacing: 0.05em;
-  }
-
-  .hero-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--neon);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.8); }
-  }
-
-  .hero-name {
-    font-size: clamp(3.5rem, 8vw, 6rem);
-    font-weight: 800;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    margin-bottom: 0.5rem;
-  }
-
-  .hero-name .first { color: var(--text); }
-  .hero-name .last {
-    color: transparent;
-    -webkit-text-stroke: 2px var(--neon);
-    display: block;
-  }
-
-  .hero-title {
-    font-family: 'Space Mono', monospace;
-    font-size: 1rem;
-    color: var(--muted);
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.05em;
-  }
-
-  .hero-title .typed {
-    color: var(--accent);
-    border-right: 2px solid var(--accent);
-    animation: blink 1s step-end infinite;
-  }
-
-  @keyframes blink { 50% { border-color: transparent; } }
-
-  .hero-desc {
-    font-size: 1.05rem;
-    color: var(--muted);
-    line-height: 1.7;
-    max-width: 520px;
-    margin-bottom: 2.5rem;
-  }
-
-  .hero-btns {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    background: var(--neon);
-    color: var(--bg);
-    border: none;
-    padding: 0.85rem 2rem;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: box-shadow 0.2s, transform 0.2s;
-    display: inline-block;
-  }
-  .btn-primary:hover {
-    box-shadow: 0 0 30px rgba(0,212,255,0.5);
-    transform: translateY(-2px);
-  }
-
-  .btn-outline {
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--border);
-    padding: 0.85rem 2rem;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: border-color 0.2s, color 0.2s;
-    display: inline-block;
-  }
-  .btn-outline:hover {
-    border-color: var(--neon);
-    color: var(--neon);
-  }
-
-  .hero-stats {
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    z-index: 2;
-  }
-
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.2rem 1.5rem;
-    text-align: center;
-    min-width: 120px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-  .stat-card:hover {
-    border-color: var(--neon);
-    box-shadow: var(--glow);
-  }
-
-  .stat-num {
-    font-family: 'Space Mono', monospace;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--neon);
-    display: block;
-  }
-  .stat-label {
-    font-size: 0.7rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 0.2rem;
-  }
-
-  /* --- SECTIONS --- */
-  section { padding: 5rem 5%; }
-
-  .section-tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--neon);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-  .section-tag::before {
-    content: '';
-    height: 1px;
-    width: 30px;
-    background: var(--neon);
-  }
-
-  .section-title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-    line-height: 1.1;
-  }
-
-  .section-sub {
-    color: var(--muted);
-    font-size: 1rem;
-    line-height: 1.7;
-    max-width: 480px;
-    margin-bottom: 3rem;
-  }
-
-  /* --- ABOUT --- */
-  #about {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: center;
-  }
-
-  .about-visual {
-    position: relative;
-  }
-
-  .about-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2.5rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .about-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--neon), var(--neon2));
-  }
-
-  .about-avatar {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, var(--neon), var(--neon2));
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .about-card h3 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-
-  .about-card p {
-    color: var(--muted);
-    font-size: 0.9rem;
-    line-height: 1.7;
-  }
-
-  .floating-tag {
-    position: absolute;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.6rem 1rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--neon);
-    white-space: nowrap;
-  }
-  .floating-tag.t1 { top: -1rem; right: -1rem; }
-  .floating-tag.t2 { bottom: 1rem; left: -2rem; }
-
-  .about-text h2 { margin-bottom: 1.5rem; }
-
-  .about-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    margin-bottom: 2rem;
-  }
-  .about-list li {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    color: var(--muted);
-    font-size: 0.95rem;
-  }
-  .about-list li::before {
-    content: '▸';
-    color: var(--neon);
-    font-size: 0.7rem;
-  }
-
-  /* --- SKILLS --- */
-  #skills { background: var(--surface); }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-
-  .skill-group {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 2rem;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-  .skill-group:hover {
-    border-color: var(--neon);
-    transform: translateY(-4px);
-  }
-
-  .skill-group-title {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--neon);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-  .skill-group-title .icon {
-    width: 28px;
-    height: 28px;
-    background: rgba(0,212,255,0.1);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-  }
-
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .skill-tag {
-    background: rgba(0,212,255,0.06);
-    border: 1px solid rgba(0,212,255,0.15);
-    color: var(--text);
-    font-size: 0.8rem;
-    padding: 0.35rem 0.8rem;
-    border-radius: 4px;
-    font-weight: 600;
-    transition: background 0.2s, border-color 0.2s;
-  }
-  .skill-tag:hover {
-    background: rgba(0,212,255,0.12);
-    border-color: var(--neon);
-  }
-
-  /* --- SERVICES --- */
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .service-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
-    cursor: default;
-  }
-  .service-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 2px;
-    background: linear-gradient(90deg, var(--neon), var(--neon2));
-    transition: width 0.4s ease;
-  }
-  .service-card:hover {
-    border-color: rgba(0,212,255,0.4);
-    transform: translateY(-6px);
-  }
-  .service-card:hover::after { width: 100%; }
-
-  .service-icon {
-    width: 48px;
-    height: 48px;
-    background: rgba(0,212,255,0.08);
-    border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    margin-bottom: 1.2rem;
-  }
-
-  .service-card h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 0.7rem;
-  }
-
-  .service-card p {
-    color: var(--muted);
-    font-size: 0.88rem;
-    line-height: 1.7;
-  }
-
-  .service-items {
-    margin-top: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-  .service-item {
-    font-size: 0.75rem;
-    color: var(--muted);
-    font-family: 'Space Mono', monospace;
-    background: rgba(255,255,255,0.04);
-    padding: 0.2rem 0.6rem;
-    border-radius: 3px;
-  }
-
-  /* --- PROJECTS --- */
-  #projects { background: var(--surface); }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .project-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-  .project-card:hover {
-    border-color: var(--neon);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-  }
-
-  .project-thumb {
-    height: 180px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-  }
-
-  .project-thumb.p1 { background: linear-gradient(135deg, #0f172a, #1e3a5f); }
-  .project-thumb.p2 { background: linear-gradient(135deg, #1a0533, #3b1a6b); }
-  .project-thumb.p3 { background: linear-gradient(135deg, #0d2115, #1a4530); }
-  .project-thumb.p4 { background: linear-gradient(135deg, #2d1414, #5a2020); }
-
-  .project-thumb .overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,212,255,0.05);
-    opacity: 0;
-    transition: opacity 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-  }
-  .project-card:hover .overlay { opacity: 1; }
-
-  .project-link {
-    background: var(--neon);
-    color: var(--bg);
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: box-shadow 0.2s;
-  }
-  .project-link:hover { box-shadow: 0 0 15px rgba(0,212,255,0.4); }
-
-  .project-info {
-    padding: 1.5rem;
-  }
-
-  .project-tech {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-bottom: 0.8rem;
-  }
-  .tech-badge {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--neon);
-    background: rgba(0,212,255,0.08);
-    padding: 0.2rem 0.6rem;
-    border-radius: 3px;
-    border: 1px solid rgba(0,212,255,0.15);
-  }
-
-  .project-info h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-  .project-info p {
-    color: var(--muted);
-    font-size: 0.85rem;
-    line-height: 1.6;
-  }
-
-  /* --- CONTACT --- */
-  .contact-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 4rem;
-    align-items: start;
-  }
-
-  .contact-info h2 { margin-bottom: 1rem; }
-
-  .contact-channels {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-
-  .channel {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    text-decoration: none;
-    color: var(--text);
-    transition: border-color 0.2s;
-  }
-  .channel:hover { border-color: var(--neon); }
-
-  .channel-icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(0,212,255,0.08);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    flex-shrink: 0;
-  }
-
-  .channel-detail { font-size: 0.8rem; }
-  .channel-detail strong { display: block; font-size: 0.9rem; }
-  .channel-detail span { color: var(--muted); }
-
-  /* FORM */
-  .contact-form {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2.5rem;
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .form-group label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.8rem 1rem;
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
-  .form-group input:focus,
-  .form-group textarea:focus,
-  .form-group select:focus {
-    border-color: var(--neon);
-    box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
-  }
-
-  .form-group textarea { resize: vertical; min-height: 120px; }
-
-  .form-group select option { background: var(--bg); }
-
-  .form-submit {
-    width: 100%;
-    background: var(--neon);
-    color: var(--bg);
-    border: none;
-    padding: 1rem;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.05em;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: box-shadow 0.2s, transform 0.2s;
-  }
-  .form-submit:hover {
-    box-shadow: 0 0 30px rgba(0,212,255,0.4);
-    transform: translateY(-2px);
-  }
-
-  /* --- FOOTER --- */
-  footer {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 2.5rem 5%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .footer-copy {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--muted);
-  }
-  .footer-copy span { color: var(--neon); }
-
-  .footer-links {
-    display: flex;
-    gap: 1.5rem;
-  }
-  .footer-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.8rem;
-    transition: color 0.2s;
-  }
-  .footer-links a:hover { color: var(--neon); }
-
-  /* --- DIVIDER --- */
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 0 5%;
-  }
-
-  /* --- SCROLL ANIMATIONS --- */
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* --- RESPONSIVE --- */
-  @media (max-width: 900px) {
-    #about { grid-template-columns: 1fr; }
-    .hero-stats { display: none; }
-    .skills-grid { grid-template-columns: 1fr 1fr; }
-    .contact-wrapper { grid-template-columns: 1fr; }
-    .form-row { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 600px) {
-    .nav-links { display: none; }
-    .skills-grid { grid-template-columns: 1fr; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Harsh — Senior Full-Stack Developer & AI Integration Specialist. Building intelligent web apps, conversational agents, and modern responsive layouts.">
+  <meta name="keywords" content="Portfolio, Full-Stack Developer, AI Chatbots, Web Developer, React, JavaScript, PHP, MySQL, Harsh Portfolio">
+  <meta name="author" content="Harsh">
+  <meta property="og:title" content="Harsh | AI & Full-Stack Developer">
+  <meta property="og:description" content="Portfolio of Harsh showcasing web application projects, custom chatbot systems, and interactive UI visual architectures.">
+  <meta property="og:type" content="website">
+  
+  <title>Harsh | AI & Full-Stack Web Developer</title>
+  
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <a href="#hero" class="logo">harsh<span>.</span>dev</a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#contact" class="nav-cta">Hire Me</a></li>
-  </ul>
-</nav>
+  <!-- === HEADER / NAV LANDMARK === -->
+  <header id="header" class="header">
+    <div class="container nav-container">
+      <a href="#hero" class="logo">
+        [harsh<span>.</span>dev]
+      </a>
+      
+      <nav>
+        <ul id="nav-menu" class="nav-menu">
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#skills" class="nav-link">Skills</a></li>
+          <li><a href="#services" class="nav-link">Services</a></li>
+          <li><a href="#projects" class="nav-link">Projects</a></li>
+          <li><a href="#faq" class="nav-link">FAQ</a></li>
+          <li><a href="#contact" class="nav-link btn btn-outline" style="padding: 0.5rem 1.25rem;">Hire Me</a></li>
+        </ul>
+      </nav>
 
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="grid-lines"></div>
-  <div class="hero-content">
-    <div class="hero-badge">Available for freelance work</div>
-    <h1 class="hero-name">
-      <span class="first">Hi, I'm</span>
-      <span class="last">Harsh</span>
-    </h1>
-    <p class="hero-title">
-      <span id="typed" class="typed">Web Developer</span>
-    </p>
-    <p class="hero-desc">
-      I build modern websites, AI chatbots, apps, and digital solutions. 
-      Turning complex ideas into clean, performant code.
-    </p>
-    <div class="hero-btns">
-      <a href="#projects" class="btn-primary">View Projects</a>
-      <a href="#contact" class="btn-outline">Contact Me</a>
-    </div>
-  </div>
-  <div class="hero-stats">
-    <div class="stat-card">
-      <span class="stat-num">15+</span>
-      <span class="stat-label">Projects</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-num">5+</span>
-      <span class="stat-label">Services</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-num">10+</span>
-      <span class="stat-label">Tech Stack</span>
-    </div>
-  </div>
-</section>
+      <div class="nav-actions">
+        <!-- Dark / Light Theme Toggle -->
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme Mode">
+          <svg class="sun-icon" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21M4.93 4.93l1.58 1.58m9.75 9.75l1.58 1.58M3 12h2.25m13.5 0H21M4.93 19.07l1.58-1.58m9.75-9.75l1.58-1.58M12 7.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" />
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6.75 6.75 0 100-13.5 6.75 6.75 0 000 13.5z" />
+          </svg>
+        </button>
 
-<div class="divider"></div>
+        <!-- Burger Toggle for Mobile -->
+        <button id="mobile-burger" class="burger-menu" aria-label="Open Navigation Menu">
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="about-visual reveal">
-    <div class="about-card">
-      <div class="about-avatar">💻</div>
-      <h3>Harsh — Developer & AI Creator</h3>
-      <p>Passionate about building modern websites and smart applications. Always learning, always building.</p>
-    </div>
-    <div class="floating-tag t1">⚡ Open to work</div>
-    <div class="floating-tag t2">🎓 CS Student</div>
-  </div>
-  <div class="about-text reveal">
-    <div class="section-tag">About Me</div>
-    <h2 class="section-title">Building Smart<br>Digital Solutions</h2>
-    <p class="section-sub">I'm a web developer and AI creator passionate about creating modern websites and intelligent applications using the latest technologies.</p>
-    <ul class="about-list">
-      <li>Full-stack developer with frontend & backend skills</li>
-      <li>AI chatbot developer and integrations specialist</li>
-      <li>App & game developer with creative problem-solving</li>
-      <li>UI designer who cares about user experience</li>
-      <li>Freelancer available for projects & collaborations</li>
-    </ul>
-    <a href="#contact" class="btn-primary">Get in Touch →</a>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div style="text-align:center; margin-bottom:3rem;" class="reveal">
-    <div class="section-tag" style="justify-content:center;">Technical Expertise</div>
-    <h2 class="section-title">My Skill Set</h2>
-    <p class="section-sub" style="margin: 0 auto;">Technologies and tools I work with to build exceptional digital experiences.</p>
-  </div>
-  <div class="skills-grid">
-    <div class="skill-group reveal">
-      <div class="skill-group-title"><span class="icon">🎨</span>Frontend</div>
-      <div class="skill-tags">
-        <span class="skill-tag">HTML5</span>
-        <span class="skill-tag">CSS3</span>
-        <span class="skill-tag">JavaScript</span>
-        <span class="skill-tag">Bootstrap</span>
-        <span class="skill-tag">Responsive</span>
-        <span class="skill-tag">UI Design</span>
-      </div>
-    </div>
-    <div class="skill-group reveal">
-      <div class="skill-group-title"><span class="icon">⚙️</span>Backend</div>
-      <div class="skill-tags">
-        <span class="skill-tag">PHP</span>
-        <span class="skill-tag">Python</span>
-        <span class="skill-tag">Java</span>
-        <span class="skill-tag">MySQL</span>
-        <span class="skill-tag">Database</span>
-        <span class="skill-tag">REST APIs</span>
-      </div>
-    </div>
-    <div class="skill-group reveal">
-      <div class="skill-group-title"><span class="icon">🤖</span>AI & Other</div>
-      <div class="skill-tags">
-        <span class="skill-tag">AI Chatbots</span>
-        <span class="skill-tag">App Dev</span>
-        <span class="skill-tag">Game Dev</span>
-        <span class="skill-tag">Banner Design</span>
-        <span class="skill-tag">Canva</span>
-        <span class="skill-tag">Figma</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- SERVICES -->
-<section id="services">
-  <div class="reveal" style="margin-bottom:3rem;">
-    <div class="section-tag">What I Offer</div>
-    <h2 class="section-title">Services</h2>
-    <p class="section-sub">End-to-end digital solutions tailored to your needs.</p>
-  </div>
-  <div class="services-grid">
-    <div class="service-card reveal">
-      <div class="service-icon">🌐</div>
-      <h3>Website Development</h3>
-      <p>Modern, responsive websites built for performance and aesthetics — from portfolios to business sites.</p>
-      <div class="service-items">
-        <span class="service-item">Business Sites</span>
-        <span class="service-item">Portfolios</span>
-        <span class="service-item">College Projects</span>
-      </div>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">🤖</div>
-      <h3>AI Chatbot Development</h3>
-      <p>Intelligent chatbot solutions for customer support, automation, and interactive website experiences.</p>
-      <div class="service-items">
-        <span class="service-item">AI Assistant</span>
-        <span class="service-item">Support Bot</span>
-        <span class="service-item">Custom Flows</span>
-      </div>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">📱</div>
-      <h3>App Development</h3>
-      <p>Android and utility apps designed with user experience and functionality as core priorities.</p>
-      <div class="service-items">
-        <span class="service-item">Android Apps</span>
-        <span class="service-item">Utility Tools</span>
-        <span class="service-item">Educational</span>
-      </div>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">🎮</div>
-      <h3>Game Development</h3>
-      <p>Fun 2D browser games and mini applications, built for engagement and entertainment.</p>
-      <div class="service-items">
-        <span class="service-item">2D Games</span>
-        <span class="service-item">Browser Games</span>
-        <span class="service-item">Mini Apps</span>
-      </div>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">🎨</div>
-      <h3>Graphic Design</h3>
-      <p>Eye-catching banners, posters, and social media graphics that communicate your brand effectively.</p>
-      <div class="service-items">
-        <span class="service-item">Banners</span>
-        <span class="service-item">Posters</span>
-        <span class="service-item">Social Media</span>
-      </div>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-icon">🛒</div>
-      <h3>PHP Systems</h3>
-      <p>Custom management systems, login panels, and database-driven web applications in PHP & MySQL.</p>
-      <div class="service-items">
-        <span class="service-item">CMS</span>
-        <span class="service-item">Admin Panel</span>
-        <span class="service-item">MySQL</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="reveal" style="margin-bottom:3rem;">
-    <div class="section-tag">Featured Work</div>
-    <h2 class="section-title">Projects</h2>
-    <p class="section-sub">A selection of recent projects across web, AI, and apps.</p>
-  </div>
-  <div class="projects-grid">
-    <div class="project-card reveal">
-      <div class="project-thumb p1">
-        🛍️
-        <div class="overlay">
-          <a href="#" class="project-link">View Demo</a>
-          <a href="#" class="project-link" style="background:var(--surface2);color:var(--text);">GitHub</a>
-        </div>
-      </div>
-      <div class="project-info">
-        <div class="project-tech">
-          <span class="tech-badge">HTML</span>
-          <span class="tech-badge">CSS</span>
-          <span class="tech-badge">PHP</span>
-          <span class="tech-badge">MySQL</span>
-        </div>
-        <h3>Shopping Website</h3>
-        <p>A full-featured e-commerce site with product listings, cart, user auth, and admin dashboard.</p>
-      </div>
-    </div>
-    <div class="project-card reveal">
-      <div class="project-thumb p2">
-        🤖
-        <div class="overlay">
-          <a href="#" class="project-link">View Demo</a>
-          <a href="#" class="project-link" style="background:var(--surface2);color:var(--text);">GitHub</a>
-        </div>
-      </div>
-      <div class="project-info">
-        <div class="project-tech">
-          <span class="tech-badge">Python</span>
-          <span class="tech-badge">AI API</span>
-          <span class="tech-badge">JavaScript</span>
-        </div>
-        <h3>AI Chatbot</h3>
-        <p>Intelligent chatbot assistant with natural language understanding for customer support use cases.</p>
-      </div>
-    </div>
-    <div class="project-card reveal">
-      <div class="project-thumb p3">
-        🎮
-        <div class="overlay">
-          <a href="#" class="project-link">Play Now</a>
-          <a href="#" class="project-link" style="background:var(--surface2);color:var(--text);">GitHub</a>
-        </div>
-      </div>
-      <div class="project-info">
-        <div class="project-tech">
-          <span class="tech-badge">JavaScript</span>
-          <span class="tech-badge">Canvas</span>
-          <span class="tech-badge">HTML5</span>
-        </div>
-        <h3>Browser Game</h3>
-        <p>A 2D mini browser game built with the HTML5 Canvas API, featuring levels and a scoring system.</p>
-      </div>
-    </div>
-    <div class="project-card reveal">
-      <div class="project-thumb p4">
-        ☕
-        <div class="overlay">
-          <a href="#" class="project-link">View Demo</a>
-          <a href="#" class="project-link" style="background:var(--surface2);color:var(--text);">GitHub</a>
-        </div>
-      </div>
-      <div class="project-info">
-        <div class="project-tech">
-          <span class="tech-badge">Java</span>
-          <span class="tech-badge">Swing</span>
-          <span class="tech-badge">OOP</span>
-        </div>
-        <h3>Java Application</h3>
-        <p>A desktop management application built in Java with clean OOP architecture and a Swing GUI.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="contact-wrapper">
-    <div class="contact-info reveal">
-      <div class="section-tag">Get in Touch</div>
-      <h2 class="section-title">Let's Build<br>Together</h2>
-      <p class="section-sub">Have a project in mind? Let's talk and make it real.</p>
-      <div class="contact-channels">
-        <a href="mailto:harshsathvara134@example.com" class="channel">
-          <div class="channel-icon">✉️</div>
-          <div class="channel-detail">
-            <strong>Email</strong>
-            <span>harshsathvara134@example.com</span>
+  <main>
+    <!-- === HERO SECTION === -->
+    <section id="hero" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-dot"></span> Available for selective contracts
           </div>
-        </a>
-        <a href="https://wa.me/91XXXXXXXXXX" class="channel">
-          <div class="channel-icon">💬</div>
-          <div class="channel-detail">
-            <strong>WhatsApp</strong>
-            <span>+91 XXXXX XXXXX</span>
+          <h1 class="hero-title">
+            <span>Hi, I'm Harsh</span>
+            <span class="name-highlight">AI & Web Architect</span>
+          </h1>
+          
+          <div class="typing-container">
+            I craft <span></span>
           </div>
-        </a>
-        <a href="https://github.com/harshsathvara134-cpu" class="channel">
-          <div class="channel-icon">🐙</div>
-          <div class="channel-detail">
-            <strong>GitHub</strong>
-            <span>github.com</span>
+
+          <p class="hero-description">
+            Helping startups and growing enterprises design robust full-stack applications and integrate conversational agent systems to automate operations.
+          </p>
+
+          <div class="hero-cta">
+            <a href="#projects" class="btn btn-primary">
+              Explore Projects
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
+            <a href="#contact" class="btn btn-outline">Let's Connect</a>
           </div>
-        </a>
-        <a href="linkedin.com/in/harsh-sathvara" class="channel">
-          <div class="channel-icon">💼</div>
-          <div class="channel-detail">
-            <strong>LinkedIn</strong>
-            <span>linkedin.com</span>
+
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-number">15+</span>
+              <span class="stat-tag">Global Projects</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">98%</span>
+              <span class="stat-tag">Client retention</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">2+</span>
+              <span class="stat-tag">Years Experience</span>
+            </div>
           </div>
-        </a>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-blob"></div>
+          <!-- Profile Badge Card -->
+          <div class="floating-glass-card card-main">
+            <div class="card-profile">
+              <div class="profile-img-placeholder">💻</div>
+              <div class="profile-info">
+                <h4>Harsh Sathvara</h4>
+                <p>System Architect</p>
+                <div class="pulse-badge">● Active Project</div>
+              </div>
+            </div>
+          </div>
+          <!-- Tech Stack Pill Card -->
+          <div class="floating-glass-card card-tech">
+            <h4 style="font-size:0.9rem; margin-bottom:0.5rem;">Core Stack</h4>
+            <div class="card-tech-list">
+              <span class="card-tech-chip">Python</span>
+              <span class="card-tech-chip">NodeJS</span>
+              <span class="card-tech-chip">React</span>
+              <span class="card-tech-chip">MySQL</span>
+              <span class="card-tech-chip">Express</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === ABOUT SECTION === -->
+    <section id="about" class="about revealer">
+      <div class="container about-grid">
+        <div class="about-visual">
+          <div class="about-frame">
+            <!-- Simulated premium web code visual -->
+            <div style="padding: 2.5rem; font-family: var(--font-mono); font-size: 0.82rem; color: #a1a1aa; line-height: 1.7;">
+              <span style="color:#f43f5e;">const</span> developer = {<br>
+              &nbsp;&nbsp;name: <span style="color:#10b981;">'Harsh Sathvara'</span>,<br>
+              &nbsp;&nbsp;focus: <span style="color:#10b981;">'Full-Stack Web & AI'</span>,<br>
+              &nbsp;&nbsp;drive: <span style="color:#10b981;">'Designing Clean, Robust Code'</span>,<br>
+              &nbsp;&nbsp;tools: [<span style="color:#6366f1;">'JS'</span>, <span style="color:#6366f1;">'Python'</span>, <span style="color:#6366f1;">'PHP'</span>, <span style="color:#6366f1;">'SQL'</span>]<br>
+              };<br><br>
+              <span style="color:#78716c;">// Interactive Agent Integration</span><br>
+              <span style="color:#f43f5e;">function</span> deployAgent(config) {<br>
+              &nbsp;&nbsp;return AI.initialize(config)<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;.then(status => console.log('Ready'));<br>
+              }
+            </div>
+            <div class="about-experience-card floating-glass-card">
+              <span class="stat-number">2+</span>
+              <p class="stat-tag">Years Code Design</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-content">
+          <div class="section-tag">About Me</div>
+          <h2 class="section-title">Decoupling Complexity, Restructuring Design</h2>
+          <p class="about-bio">
+            I am a full-stack engineer and AI builder dedicated to optimizing operational workflows. My focus is on writing robust APIs, building intuitive frontend components, and building conversational AI logic that turns generic experiences into structured, helpful assets.
+          </p>
+
+          <div class="about-highlights">
+            <div class="highlight-box">
+              <div class="highlight-icon">
+                <svg viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.008v.008H12V18zm0-3h.008v.008H12V15zm0-3h.008v.008H12V12zm0-3h.008v.008H12V9zm0-3h.008v.008H12V6z" />
+                </svg>
+              </div>
+              <div>
+                <h4>Handcrafted Logic</h4>
+                <p>Clean structures written from the ground up for maximum scale.</p>
+              </div>
+            </div>
+            <div class="highlight-box">
+              <div class="highlight-icon">
+                <svg viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+              </div>
+              <div>
+                <h4>AI Pipelines</h4>
+                <p>Incorporated LLMs and local support flow controls directly into interfaces.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="experience-timeline">
+            <div class="timeline-item">
+              <div class="timeline-marker"></div>
+              <div class="timeline-header">
+                <h3 class="timeline-title">Freelance Full-Stack Developer</h3>
+                <span class="timeline-company">Upwork & Contract</span>
+                <span class="timeline-date">2024 — Present</span>
+              </div>
+              <p class="timeline-desc">
+                Building bespoke React panels, secure JWT middleware services, and PHP inventory systems for international clients. Directly integrated payment providers like Razorpay.
+              </p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-marker"></div>
+              <div class="timeline-header">
+                <h3 class="timeline-title">AI Chatbot Specialist</h3>
+                <span class="timeline-company">Independent Contractor</span>
+                <span class="timeline-date">2023 — 2024</span>
+              </div>
+              <p class="timeline-desc">
+                Consulted on vector databases, trained conversational agents, and connected custom APIs into live support frameworks, reducing customer support load for e-commerce platforms.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === SKILLS SECTION === -->
+    <section id="skills" class="skills revealer">
+      <div class="container skills-wrapper">
+        <div class="skills-sidebar">
+          <div class="section-tag">Expertise</div>
+          <h2 class="section-title">Technological Capabilities</h2>
+          <p>
+            An overview of the languages and modern tools I leverage to construct robust backend services and responsive client panels.
+          </p>
+
+          <div class="skill-category-selectors">
+            <button class="skill-category-btn active" data-category="core">
+              Core Stack
+              <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <button class="skill-category-btn" data-category="ai">
+              AI & Agents
+              <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <button class="skill-category-btn" data-category="tools">
+              Platforms & Infrastructure
+              <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="skills-panel">
+          <!-- CORE STACK -->
+          <div id="group-core" class="skills-content-group active">
+            <div class="skills-grid">
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">JavaScript (ES6+)</span>
+                  <span class="skill-percent">95%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="95"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Python / Node.js</span>
+                  <span class="skill-percent">90%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="90"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">HTML5 / Modern CSS</span>
+                  <span class="skill-percent">92%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="92"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">PHP & MySQL</span>
+                  <span class="skill-percent">88%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="88"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI & AGENTS -->
+          <div id="group-ai" class="skills-content-group">
+            <div class="skills-grid">
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">LLM Fine-Tuning & Prompting</span>
+                  <span class="skill-percent">85%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="85"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">LangChain / Flowise</span>
+                  <span class="skill-percent">82%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="82"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Vector Databases (Pinecone)</span>
+                  <span class="skill-percent">78%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="78"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">OpenAI API / Claude SDKs</span>
+                  <span class="skill-percent">90%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="90"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- INFRASTRUCTURE -->
+          <div id="group-tools" class="skills-content-group">
+            <div class="skills-grid">
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Figma / Graphic Layouts</span>
+                  <span class="skill-percent">80%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="80"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">GitHub / CI-CD</span>
+                  <span class="skill-percent">88%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="88"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Google Cloud / Vercel</span>
+                  <span class="skill-percent">85%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="85"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">SQLite / PostgreSQL</span>
+                  <span class="skill-percent">82%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" data-percentage="82"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === SERVICES SECTION === -->
+    <section id="services" class="services revealer">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Offerings</div>
+          <h2 class="section-title">Functional Solutions Built Correctly</h2>
+          <p class="section-subtitle">Combining clean engineering layout paradigms with modern AI capabilities to build long-term business assets.</p>
+        </div>
+
+        <div class="services-grid">
+          <!-- Card 1 -->
+          <div class="service-card">
+            <div class="service-card-icon">
+              <!-- Web App Icon SVG -->
+              <svg viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253" />
+              </svg>
+            </div>
+            <h3>Full-Stack Applications</h3>
+            <p>Developing responsive administration panels, inventory logs, and customer checkout solutions using React, PHP, and secure REST architectures.</p>
+            <ul class="service-features-list">
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg> JWT Secured Middlewares
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg> Custom SQL Database Models
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg> Native Payments Integration
+              </li>
+            </ul>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="service-card">
+            <div class="service-card-icon">
+              <!-- AI Chatbot Icon SVG -->
+              <svg viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+            <h3>AI Integration & Agents</h3>
+            <p>Structured implementation of advanced LLM APIs. Training and tuning custom system prompts and chaining agent retrieval logic for seamless outputs.</p>
+            <ul class="service-features-list">
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg> Contextual Vector Querying
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg> Automated CRM Syncing
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg> Flowise & LangChain Setups
+              </li>
+            </ul>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="service-card">
+            <div class="service-card-icon">
+              <!-- UI Graphic SVG -->
+              <svg viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122l9.37-9.37m0 0l-3.11-3.11m3.11 3.11h-3.11M9.53 16.122l3.11 3.11m-3.11-3.11L3 21.03M12.64 19.232l5.244-5.244m-5.244 5.244l-3.11-3.11m8.354-2.134L19.5 12.63m-6.86 6.602l3.11 3.11m-3.11-3.11l5.244-5.244" />
+              </svg>
+            </div>
+            <h3>Figma Prototyping & Layouts</h3>
+            <p>Designing modern vector layouts, typography assets, high-fidelity prototypes, and cohesive color schemes tailored for product presentation.</p>
+            <ul class="service-features-list">
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg> Interactive Grid Frames
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg> Brand Design Visual Kits
+              </li>
+              <li class="service-feature-item">
+                <svg viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg> Micro-Interaction Blueprints
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <    <!-- === PROJECTS SECTION === -->
+    <section id="projects" class="projects revealer">
+      <div class="container">
+        <div class="projects-header-wrapper">
+          <div class="section-header">
+            <div class="section-tag">Showcase</div>
+            <h2 class="section-title">Recent System Implementations</h2>
+            <p class="section-subtitle">Bespoke full-stack platforms, custom RAG AI pipelines, and operational dashboards built with performance engineering.</p>
+          </div>
+
+          <ul class="project-filters">
+            <li class="filter-btn active" data-filter="all">All Systems (4)</li>
+            <li class="filter-btn" data-filter="web">Full-Stack Web (2)</li>
+            <li class="filter-btn" data-filter="ai">AI & Agents (2)</li>
+          </ul>
+        </div>
+
+        <div class="projects-grid">
+          <!-- Project 1 -->
+          <article class="project-card" data-category="web" data-project-id="p1">
+            <div class="project-glow-spotlight"></div>
+            <!-- Window Control Header -->
+            <div class="project-window-bar">
+              <div class="window-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <span class="window-title">shreeganesh-store.app</span>
+              <span class="window-badge badge-live">● LIVE STORE</span>
+            </div>
+
+            <!-- Dynamic Mockup Visual Box -->
+            <div class="project-mockup-box mockup-ecommerce">
+              <div class="mockup-ui-header">
+                <div class="mockup-search-bar">🔍 Search spiced masala...</div>
+                <div class="mockup-cart-badge">🛒 Cart (3)</div>
+              </div>
+              <div class="mockup-product-grid">
+                <div class="mockup-item-card">
+                  <div class="item-pic pic-1">🌶️</div>
+                  <div class="item-line short"></div>
+                  <div class="item-price">₹240 <span class="add-btn">+</span></div>
+                </div>
+                <div class="mockup-item-card">
+                  <div class="item-pic pic-2">🌿</div>
+                  <div class="item-line short"></div>
+                  <div class="item-price">₹180 <span class="add-btn">+</span></div>
+                </div>
+                <div class="mockup-item-card">
+                  <div class="item-pic pic-3">✨</div>
+                  <div class="item-line short"></div>
+                  <div class="item-price">₹320 <span class="add-btn">+</span></div>
+                </div>
+              </div>
+              <!-- Floating Metric Pill -->
+              <div class="floating-metric-pill">
+                <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span>5,000+ Orders Processed</span>
+              </div>
+              
+              <div class="project-overlay">
+                <button class="btn-quick-view" data-open-modal="p1">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M2.036 12c2.018-4.596 6.27-8 11.964-8s9.946 3.404 11.964 8c-2.018 4.596-6.27 8-11.964 8s-9.946-3.404-11.964-8z"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                  Architecture Brief
+                </button>
+              </div>
+            </div>
+
+            <div class="project-body">
+              <div class="project-tech">
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">NodeJS</span>
+                <span class="tech-tag">PostgreSQL</span>
+                <span class="tech-tag">Razorpay</span>
+              </div>
+              <h3 class="project-title">Shree Ganesh E-Commerce & Mini Cart Engine</h3>
+              <p class="project-desc">
+                High-performance ordering platform featuring a reactive drawer mini cart, localized Indian payment webhooks, and real-time inventory management.
+              </p>
+              <div class="project-footer-links">
+                <button class="btn-quick-view-link" data-open-modal="p1">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Quick Architecture
+                </button>
+                <a href="https://github.com/harshsathvara134-cpu" target="_blank" class="project-footer-link">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg> Code 🐙
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="project-card" data-category="ai" data-project-id="p2">
+            <div class="project-glow-spotlight"></div>
+            <div class="project-window-bar">
+              <div class="window-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <span class="window-title">neurochat-rag.ai</span>
+              <span class="window-badge badge-ai">⚡ RAG PIPELINE ACTIVE</span>
+            </div>
+
+            <!-- Dynamic Mockup Visual Box -->
+            <div class="project-mockup-box mockup-terminal">
+              <div class="terminal-line"><span class="t-prompt">></span> RAG.query("Querying logistics vectors...")</div>
+              <div class="terminal-line t-highlight"><span class="t-badge">Match: 99.2%</span> Similarity index verified</div>
+              <div class="terminal-stream-box">
+                <div class="stream-avatar">🤖</div>
+                <div class="stream-text">"Order #8492 is dispatched via Express Hub. ETA 24 Hours."</div>
+              </div>
+              <!-- Floating Metric Pill -->
+              <div class="floating-metric-pill">
+                <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>⏱️ 140ms Average Response</span>
+              </div>
+              
+              <div class="project-overlay">
+                <button class="btn-quick-view" data-open-modal="p2">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M2.036 12c2.018-4.596 6.27-8 11.964-8s9.946 3.404 11.964 8c-2.018 4.596-6.27 8-11.964 8s-9.946-3.404-11.964-8z"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                  Architecture Brief
+                </button>
+              </div>
+            </div>
+
+            <div class="project-body">
+              <div class="project-tech">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">LangChain</span>
+                <span class="tech-tag">Pinecone DB</span>
+                <span class="tech-tag">FastAPI</span>
+              </div>
+              <h3 class="project-title">NeuroChat Enterprise RAG Agent</h3>
+              <p class="project-desc">
+                Retrieval-augmented conversational agent integrated into operational systems, indexing documentation to answer support queries instantly.
+              </p>
+              <div class="project-footer-links">
+                <button class="btn-quick-view-link" data-open-modal="p2">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Quick Architecture
+                </button>
+                <a href="https://github.com/harshsathvara134-cpu" target="_blank" class="project-footer-link">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg> Code 🐙
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="project-card" data-category="web" data-project-id="p3">
+            <div class="project-glow-spotlight"></div>
+            <div class="project-window-bar">
+              <div class="window-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <span class="window-title">kingremedies-admin.io</span>
+              <span class="window-badge badge-sec">🔐 SECURE SAAS</span>
+            </div>
+
+            <!-- Dynamic Mockup Visual Box -->
+            <div class="project-mockup-box mockup-dashboard">
+              <div class="dash-stat-row">
+                <div class="dash-card">
+                  <span class="d-label">Gross Revenue</span>
+                  <span class="d-val">$48,250</span>
+                </div>
+                <div class="dash-card">
+                  <span class="d-label">Active Users</span>
+                  <span class="d-val">1,840</span>
+                </div>
+              </div>
+              <div class="dash-chart-bars">
+                <div class="bar" style="height: 40%"></div>
+                <div class="bar" style="height: 65%"></div>
+                <div class="bar" style="height: 50%"></div>
+                <div class="bar" style="height: 85%"></div>
+                <div class="bar" style="height: 70%"></div>
+                <div class="bar" style="height: 95%"></div>
+              </div>
+              <!-- Floating Metric Pill -->
+              <div class="floating-metric-pill">
+                <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>📊 100k+ Data Records Indexed</span>
+              </div>
+              
+              <div class="project-overlay">
+                <button class="btn-quick-view" data-open-modal="p3">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M2.036 12c2.018-4.596 6.27-8 11.964-8s9.946 3.404 11.964 8c-2.018 4.596-6.27 8-11.964 8s-9.946-3.404-11.964-8z"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                  Architecture Brief
+                </button>
+              </div>
+            </div>
+
+            <div class="project-body">
+              <div class="project-tech">
+                <span class="tech-tag">PHP 8.2</span>
+                <span class="tech-tag">MySQL</span>
+                <span class="tech-tag">Tailwind</span>
+                <span class="tech-tag">ApexCharts</span>
+              </div>
+              <h3 class="project-title">KingRemedies Admin & Analytics Hub</h3>
+              <p class="project-desc">
+                Comprehensive inventory log, category management, role authentication control, and automated billing engine.
+              </p>
+              <div class="project-footer-links">
+                <button class="btn-quick-view-link" data-open-modal="p3">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Quick Architecture
+                </button>
+                <a href="https://github.com/harshsathvara134-cpu" target="_blank" class="project-footer-link">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg> Code 🐙
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 4 -->
+          <article class="project-card" data-category="ai" data-project-id="p4">
+            <div class="project-glow-spotlight"></div>
+            <div class="project-window-bar">
+              <div class="window-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <span class="window-title">cybervision-hud.ai</span>
+              <span class="window-badge badge-hud">👁️ VISION MODEL ACTIVE</span>
+            </div>
+
+            <!-- Dynamic Mockup Visual Box -->
+            <div class="project-mockup-box mockup-vision">
+              <div class="hud-box">
+                <div class="hud-target-box">
+                  <span class="hud-label">Object: Quality_Pass [99.4%]</span>
+                </div>
+              </div>
+              <!-- Floating Metric Pill -->
+              <div class="floating-metric-pill">
+                <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path fill="none" stroke="currentColor" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                <span>🎯 60 FPS Real-time Stream</span>
+              </div>
+              
+              <div class="project-overlay">
+                <button class="btn-quick-view" data-open-modal="p4">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M2.036 12c2.018-4.596 6.27-8 11.964-8s9.946 3.404 11.964 8c-2.018 4.596-6.27 8-11.964 8s-9.946-3.404-11.964-8z"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                  Architecture Brief
+                </button>
+              </div>
+            </div>
+
+            <div class="project-body">
+              <div class="project-tech">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">OpenCV</span>
+                <span class="tech-tag">TensorFlow</span>
+                <span class="tech-tag">WebSockets</span>
+              </div>
+              <h3 class="project-title">CyberVision Real-Time Image Inspector</h3>
+              <p class="project-desc">
+                Low-latency video stream quality checking system with bounding box vector rendering and defect detection alerts.
+              </p>
+              <div class="project-footer-links">
+                <button class="btn-quick-view-link" data-open-modal="p4">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Quick Architecture
+                </button>
+                <a href="https://github.com/harshsathvara134-cpu" target="_blank" class="project-footer-link">
+                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg> Code 🐙
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- === ARCHITECTURE BLUEPRINT MODAL DIALOG === -->
+    <div id="architecture-modal" class="arch-modal-overlay">
+      <div class="arch-modal-card">
+        <button id="close-modal-btn" class="modal-close-btn" aria-label="Close Architecture Modal">&times;</button>
+        <div class="modal-header">
+          <div id="modal-badge" class="window-badge badge-live">● SYSTEM BRIEF</div>
+          <h3 id="modal-title">System Architecture Overview</h3>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section">
+            <h4>💡 Technical Blueprint & Core Logic</h4>
+            <p id="modal-desc">Detailed architecture breakdown of the selected project.</p>
+          </div>
+          
+          <div class="modal-section">
+            <h4>⚡ Key Engineering Specifications</h4>
+            <ul id="modal-specs-list" class="modal-specs-list">
+              <li>High-availability REST API endpoints with &lt; 150ms response latency</li>
+              <li>Secure JWT Token auth &amp; SQL indexing models</li>
+              <li>Automated CI/CD deployment pipelines on Vercel/CloudRun</li>
+            </ul>
+          </div>
+
+          <div class="modal-section">
+            <h4>🛠️ Integrated Tech Stack</h4>
+            <div id="modal-tech-stack" class="project-tech">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a id="modal-github-link" href="https://github.com/harshsathvara134-cpu" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.2rem; font-size:0.85rem;">
+            Explore Repository 🐙
+          </a>
       </div>
     </div>
-    <div class="contact-form reveal">
-      <div class="form-row">
-        <div class="form-group">
-          <label>First Name</label>
-          <input type="text" placeholder="John">
+
+    <!-- === TESTIMONIALS SECTION === -->
+    <section id="testimonials" class="testimonials revealer">
+      <div class="container">
+        <div class="section-header" style="text-align: center; margin: 0 auto 4rem;">
+          <div class="section-tag" style="justify-content: center;">Clients</div>
+          <h2 class="section-title">Client Collaborations</h2>
+          <p class="section-subtitle" style="margin: 0 auto;">Read direct feedback from businesses I have developed full stack features and AI integrations for.</p>
         </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <input type="text" placeholder="Doe">
+
+        <div class="testimonials-slider-box">
+          <!-- Text Overlays -->
+          <div class="testimonial-quote-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+            </svg>
+          </div>
+
+          <div style="overflow:hidden; width:100%;">
+            <div id="testimonial-track" class="testimonial-track">
+              <!-- Slide 1 -->
+              <div class="testimonial-slide active">
+                <p class="testimonial-text">
+                  "Harsh restructured our store database architecture and deployed our credit drawer feature seamlessly. Not only was the logic performant, but the code documentation helped our internal team complete updates later. Highly recommended developer!"
+                </p>
+                <div class="testimonial-author-box">
+                  <div class="testimonial-author">
+                    <div class="testimonial-avatar">👨🏼‍💼</div>
+                    <div>
+                      <h4>Vikram Patel</h4>
+                      <p>Founding Engineer, KingRemedies</p>
+                    </div>
+                  </div>
+                  <div class="testimonial-stars">
+                    <!-- 5 Star SVGs representation -->
+                    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 2 -->
+              <div class="testimonial-slide">
+                <p class="testimonial-text">
+                  "Harsh created an intelligent support assistant targeting custom customer queries. He connected our APIs and pinecone vector databases flawlessly, reducing ticket processing response times by more than 40% in our first month."
+                </p>
+                <div class="testimonial-author-box">
+                  <div class="testimonial-author">
+                    <div class="testimonial-avatar">👩🏽‍💻</div>
+                    <div>
+                      <h4>Deepika Shah</h4>
+                      <p>Operations Manager, Ganesh Logistics</p>
+                    </div>
+                  </div>
+                  <div class="testimonial-stars">
+                    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slider-bullets">
+            <span class="bullet active"></span>
+            <span class="bullet"></span>
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="john@example.com">
+    </section>
+
+    <!-- === FAQ SECTION === -->
+    <section id="faq" class="faq revealer">
+      <div class="container">
+        <div class="section-header" style="text-align: center; margin: 0 auto 4rem;">
+          <div class="section-tag" style="justify-content: center;">Questions</div>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle" style="margin: 0 auto;">Answers to the most common questions regarding project timelines, support steps, and work frameworks.</p>
+        </div>
+
+        <div class="faq-grid">
+          <!-- Accordion 1 -->
+          <div class="faq-card">
+            <button class="faq-trigger">
+              What architectures do you build websites on?
+              <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-panel">
+              <div class="faq-content">
+                I build primarily with JavaScript (React, Node.js, Express) and PHP/MySQL setups depending on application requirements. Every solution integrates responsive DOM standards, clean native components, visual transitions, robust APIs, and optimized query pipelines.
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion 2 -->
+          <div class="faq-card">
+            <button class="faq-trigger">
+              How do you approach chatbot integrations?
+              <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-panel">
+              <div class="faq-content">
+                I begin by defining the context pipeline: standardizing rules, processing source documentation, and configuring Vector Databases. Then, I chain LLM requests (using LangChain or API agents) and secure deployment keys, creating a modular support widget easily injected into websites.
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion 3 -->
+          <div class="faq-card">
+            <button class="faq-trigger">
+              Do you work under fixed budgets or hourly contracts?
+              <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-panel">
+              <div class="faq-content">
+                I work with both parameters. For structured scopes (such as specific dashboards or chatbot configurations), I prefer fixed-price milestones. For continuous iterations or systems upkeep, hourly terms are selected.
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Service Needed</label>
-        <select>
-          <option>Website Development</option>
-          <option>AI Chatbot</option>
-          <option>App Development</option>
-          <option>Game Development</option>
-          <option>Graphic Design</option>
-          <option>Other</option>
-        </select>
+    </section>
+
+    <!-- === CONTACT SECTION === -->
+    <section id="contact" class="contact revealer">
+      <div class="container contact-grid">
+        <div class="contact-info">
+          <div class="section-tag">Let's Work</div>
+          <h2 class="section-title">Initiate a Project Discussion</h2>
+          <p>
+            Submit your requirements to receive a scope breakdown, timeline framework, and architecture recommendations.
+          </p>
+
+          <div class="contact-channels">
+            <!-- Channel 1 -->
+            <div class="contact-channel-card">
+              <div class="channel-info-box">
+                <div class="channel-icon-circle">
+                  <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+                </div>
+                <div class="channel-details">
+                  <h5>E-mail Channel</h5>
+                  <p class="channel-value">harshsathvara134@gmail.com</p>
+                </div>
+              </div>
+              <button class="channel-copy-btn" data-copy-val="harshsathvara134@gmail.com" aria-label="Copy Email address to clipboard">
+                <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H5.25m11.9-3.675A.75.75 0 0118 3.75v14.25a.75.75 0 01-.75.75H8.25a.75.75 0 01-.75-.75V3.75a.75.75 0 01.75-.75h8.25z" /></svg>
+              </button>
+            </div>
+
+            <!-- Channel 2 -->
+            <div class="contact-channel-card">
+              <div class="channel-info-box">
+                <div class="channel-icon-circle">
+                  <!-- Message Icon SVG -->
+                  <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A9.75 9.75 0 0112 2.25h.75A9.75 9.75 0 0122.5 12v.75A9.75 9.75 0 0112 22.5H12a9.75 9.75 0 01-9.75-9.75z" /></svg>
+                </div>
+                <div class="channel-details">
+                  <h5>WhatsApp Messaging</h5>
+                  <p class="channel-value">+91 95861 68134</p>
+                </div>
+              </div>
+              <button class="channel-copy-btn" data-copy-val="+919586168134" aria-label="Copy Phone number to clipboard">
+                <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H5.25m11.9-3.675A.75.75 0 0118 3.75v14.25a.75.75 0 01-.75.75H8.25a.75.75 0 01-.75-.75V3.75a.75.75 0 01.75-.75h8.25z" /></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form-box">
+          <form id="portfolio-contact-form" novalidate>
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="form-name">Full Name</label>
+                <input type="text" id="form-name" class="form-control" placeholder="John Doe" required>
+              </div>
+              <div class="form-group">
+                <label for="form-email">Email Address</label>
+                <input type="email" id="form-email" class="form-control" placeholder="john@example.com" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="form-service">Project Focus</label>
+              <select id="form-service" class="form-control">
+                <option value="web">Full-Stack Web App Development</option>
+                <option value="ai">AI Agent / Chatbot Custom Integration</option>
+                <option value="design">Figma Prototyping & Layouts</option>
+                <option value="consult">Technical Consulting / Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="form-message">Project Parameters & Message</label>
+              <textarea id="form-message" class="form-control" placeholder="Detail your project features, expected timelines, and dashboard scope..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary form-submit-btn">
+              Deliver Message
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+              </svg>
+            </button>
+
+            <!-- Success/Error Feedback -->
+            <div id="form-feedback" class="form-feedback"></div>
+          </form>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Message</label>
-        <textarea placeholder="Tell me about your project..."></textarea>
+    </section>
+  </main>
+
+  <!-- === FOOTER LANDMARK === -->
+  <footer class="footer">
+    <div class="container footer-top">
+      <div class="footer-brand">
+        <h4>[harsh<span>.</span>dev]</h4>
+        <p>Designing modern, scalable interfaces and smart AI integrations built correctly from the ground up.</p>
       </div>
-      <button class="form-submit" onclick="handleSubmit(this)">Send Message →</button>
+
+      <div class="footer-links-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#hero">Overview</a></li>
+          <li><a href="#about">Biography</a></li>
+          <li><a href="#skills">Expertise</a></li>
+          <li><a href="#projects">Showcase</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-col">
+        <h4>Connect & Source</h4>
+        <div class="social-links">
+          <a href="https://github.com/harshsathvara134-cpu" target="_blank" class="social-icon-btn" aria-label="Harsh github repository profile page">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.162 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          </a>
+          <a href="https://linkedin.com" target="_blank" class="social-icon-btn" aria-label="Harsh LinkedIn business link page">
+            <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-copy">
-    © 2025 <span>Harsh.dev</span> — Built with ❤️ and lots of ☕
-  </div>
-  <div class="footer-links">
-    <a href="#hero">Home</a>
-    <a href="#projects">Projects</a>
-    <a href="#services">Services</a>
-    <a href="#contact">Contact</a>
-  </div>
-</footer>
+    <div class="container footer-bottom">
+      <p class="footer-copy">
+        © 2026 <span>[harsh.dev]</span>. Built with Vanilla Web Tech.
+      </p>
+      <p class="footer-copy" style="opacity:0.6;">
+        Designed for accessibility and lightning page speeds.
+      </p>
+    </div>
+  </footer>
 
-<script>
-  // Typed text animation
-  const words = ['Web Developer', 'AI Creator', 'App Builder', 'Game Developer', 'Problem Solver'];
-  let wordIndex = 0, charIndex = 0, deleting = false;
-  const el = document.getElementById('typed');
-
-  function typeLoop() {
-    const word = words[wordIndex];
-    if (!deleting) {
-      el.textContent = word.slice(0, ++charIndex);
-      if (charIndex === word.length) {
-        setTimeout(() => { deleting = true; typeLoop(); }, 1800);
-        return;
-      }
-    } else {
-      el.textContent = word.slice(0, --charIndex);
-      if (charIndex === 0) {
-        deleting = false;
-        wordIndex = (wordIndex + 1) % words.length;
-      }
-    }
-    setTimeout(typeLoop, deleting ? 60 : 90);
-  }
-  typeLoop();
-
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
-
-  // Form submit
-  function handleSubmit(btn) {
-    btn.textContent = '✓ Message Sent!';
-    btn.style.background = '#22c55e';
-    setTimeout(() => {
-      btn.textContent = 'Send Message →';
-      btn.style.background = '';
-    }, 3000);
-  }
-</script>
+  <!-- Vanilla Scripts -->
+  <script src="script.js"></script>
 </body>
 </html>
