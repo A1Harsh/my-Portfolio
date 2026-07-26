@@ -1631,18 +1631,6 @@ section {
   justify-content: flex-end;
 }
 
-.project-footer-link svg {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-}
-
-.project-footer-link:hover {
-  color: var(--accent-primary);
-}
-
 /* --- TESTIMONIALS SECTION --- */
 .testimonials-slider-box {
   background: var(--bg-secondary);
@@ -2135,6 +2123,12 @@ textarea.form-control {
 }
 
 .revealer.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Immediately reveal any section navigated to via anchor link (fixes FAQ/Contact nav) */
+.revealer:target {
   opacity: 1;
   transform: translateY(0);
 }

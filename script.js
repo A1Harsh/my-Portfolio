@@ -101,9 +101,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+  }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
 
   reveals.forEach(rev => sectionObserver.observe(rev));
+
+  // Also immediately reveal any section whose ID matches the current URL hash
+  const revealHashTarget = () => {
+    const hash = window.location.hash;
+    if (hash) {
+      const target = document.querySelector(hash + '.revealer');
+      if (target) {
+        target.classList.add('in-view');
+        if (target.id === 'skills') animateSkillBars();
+      }
+    }
+  };
+  revealHashTarget();
+  window.addEventListener('hashchange', revealHashTarget);
 
   function animateSkillBars() {
     skillBarFills.forEach(bar => {
