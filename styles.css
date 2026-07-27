@@ -220,13 +220,15 @@ section {
 }
 
 .btn-outline {
-  border: 1px solid var(--border-color);
+  border: 1.5px solid rgba(16, 185, 129, 0.4);
   color: var(--text-primary);
+  background: rgba(16, 185, 129, 0.05);
 }
 
 .btn-outline:hover {
   border-color: var(--accent-primary);
   color: var(--accent-primary);
+  background: var(--accent-glow);
   transform: translateY(-2px);
 }
 
@@ -285,6 +287,11 @@ section {
   list-style: none;
 }
 
+.nav-menu li {
+  display: flex;
+  align-items: center;
+}
+
 .nav-link {
   color: var(--text-secondary);
   font-size: 0.9rem;
@@ -292,13 +299,16 @@ section {
   font-family: var(--font-body);
   position: relative;
   padding: 0.5rem 0;
+  display: inline-flex;
+  align-items: center;
+  transition: color var(--transition-fast);
 }
 
 .nav-link:hover, .nav-link.active {
   color: var(--text-primary);
 }
 
-.nav-link::after {
+.nav-link:not(.btn)::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -309,8 +319,29 @@ section {
   transition: width var(--transition-fast);
 }
 
-.nav-link:hover::after, .nav-link.active::after {
+.nav-link:not(.btn):hover::after, .nav-link:not(.btn).active::after {
   width: 100%;
+}
+
+.nav-link.btn::after {
+  display: none !important;
+}
+
+.nav-link.btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  border: 1.5px solid var(--accent-primary);
+  color: var(--accent-primary) !important;
+  background: var(--accent-glow);
+  transition: all var(--transition-fast);
+}
+
+.nav-link.btn:hover {
+  background: var(--accent-primary);
+  color: #080B10 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px var(--accent-glow);
 }
 
 .nav-actions {
@@ -1173,7 +1204,7 @@ section {
 
 /* Mockup 1: E-Commerce UI */
 .mockup-ecommerce {
-  background: linear-gradient(135deg, #111827 0%, #1F2937 100%);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.82) 0%, rgba(8, 11, 16, 0.95) 100%), url('https://images.unsplash.com/photo-1556742049-0a675659e8ae?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
 }
 
 .mockup-ui-header {
@@ -1190,6 +1221,7 @@ section {
   font-size: 0.72rem;
   color: #9CA3AF;
   width: 65%;
+  backdrop-filter: blur(4px);
 }
 
 .mockup-cart-badge {
@@ -1208,23 +1240,35 @@ section {
 }
 
 .mockup-item-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-sm);
-  padding: 0.6rem;
+  padding: 0.4rem;
   text-align: center;
+  backdrop-filter: blur(6px);
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-.item-pic {
-  font-size: 1.4rem;
+.mockup-item-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-primary);
+}
+
+.item-img {
+  width: 100%;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 4px;
   margin-bottom: 0.3rem;
 }
 
-.item-line {
-  height: 4px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 2px;
-  margin: 0.2rem auto;
+.item-name {
+  font-size: 0.68rem;
+  color: #E2E8F0;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-price {
@@ -1234,7 +1278,7 @@ section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 0.4rem;
+  margin-top: 0.3rem;
 }
 
 .add-btn {
@@ -1251,7 +1295,7 @@ section {
 
 /* Mockup 2: Terminal AI */
 .mockup-terminal {
-  background: #090D16;
+  background: linear-gradient(180deg, rgba(9, 13, 22, 0.88) 0%, rgba(9, 13, 22, 0.96) 100%), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
   font-family: var(--font-mono);
   font-size: 0.78rem;
   color: #D1D5DB;
@@ -1266,13 +1310,14 @@ section {
 .t-badge { background: rgba(99, 102, 241, 0.2); padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.7rem; }
 
 .terminal-stream-box {
-  background: rgba(255, 255, 255, 0.03);
-  border-left: 2px solid #818CF8;
+  background: rgba(15, 23, 42, 0.75);
+  border-left: 3px solid #818CF8;
   padding: 0.6rem;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 6px 6px 0;
   display: flex;
   gap: 0.6rem;
   align-items: center;
+  backdrop-filter: blur(6px);
 }
 
 .stream-avatar { font-size: 1.2rem; }
@@ -1280,7 +1325,7 @@ section {
 
 /* Mockup 3: Dashboard Analytics */
 .mockup-dashboard {
-  background: #0A0F1D;
+  background: linear-gradient(180deg, rgba(10, 15, 29, 0.82) 0%, rgba(10, 15, 29, 0.95) 100%), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
 }
 
 .dash-stat-row {
@@ -1289,11 +1334,12 @@ section {
 }
 
 .dash-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-sm);
   padding: 0.5rem 0.8rem;
   flex: 1;
+  backdrop-filter: blur(6px);
 }
 
 .d-label { font-size: 0.65rem; color: #9CA3AF; display: block; }
@@ -1316,7 +1362,7 @@ section {
 
 /* Mockup 4: Vision HUD */
 .mockup-vision {
-  background: radial-gradient(circle at center, #0F172A 0%, #020617 100%);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.75) 0%, rgba(2, 6, 23, 0.95) 100%), url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
       link.addEventListener('click', () => {
         burgerMenu.classList.remove('open');
         navMenu.classList.remove('open');
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
       });
     });
 
@@ -141,9 +143,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     });
-  }, { threshold: 0.45, rootMargin: '-80px 0px -40% 0px' });
+  }, { threshold: 0.2, rootMargin: '-70px 0px -25% 0px' });
 
   sections.forEach(sec => activeLinkObserver.observe(sec));
+
+  // Bottom of page check for FAQ/Contact active state
+  window.addEventListener('scroll', () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === '#contact') {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+  });
 
   // === SKILL CATEGORY SHOWCASE PICKER ===
   const skillCategoryButtons = document.querySelectorAll('.skill-category-btn');
@@ -241,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const projectDetails = {
     p1: {
-      title: "Shree Ganesh E-Commerce & Mini Cart Engine",
+      title: "Jayveer E-Commerce & Mini Cart Engine",
       badge: "● LIVE STORE",
       badgeClass: "badge-live",
       desc: "Built as a high-speed production spice platform capable of handling localized payment webhooks, customer cart state synchronization, and scalable checkout procedures.",
