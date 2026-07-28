@@ -484,8 +484,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Retrieve form controls
       const nameInput = document.getElementById('form-name');
       const emailInput = document.getElementById('form-email');
+      const phoneInput = document.getElementById('form-phone');
       const messageInput = document.getElementById('form-message');
-      const serviceSelect = document.getElementById('form-service');
       const submitBtn = contactForm.querySelector('.form-submit-btn');
 
       // Clear previous feedbacks
@@ -502,6 +502,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!emailInput.value.trim() || !validateEmail(emailInput.value)) {
         showFeedback('Please enter a valid email address.', 'error');
         emailInput.focus();
+        return;
+      }
+
+      if (phoneInput && !phoneInput.value.trim()) {
+        showFeedback('Please enter your contact number.', 'error');
+        phoneInput.focus();
         return;
       }
 
