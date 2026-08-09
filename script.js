@@ -638,19 +638,19 @@ document.addEventListener('DOMContentLoaded', () => {
       formFeedback.style.display = 'none';
       formFeedback.className = 'form-feedback';
 
-      if (!name) {
-        showFeedback('Please enter your full name.', 'error');
+      if (!name || name.length > 100) {
+        showFeedback('Please enter a valid name (1-100 characters).', 'error');
         return;
       }
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!email || !emailRegex.test(email)) {
+      if (!email || email.length > 100 || !emailRegex.test(email)) {
         showFeedback('Please enter a valid email address.', 'error');
         return;
       }
 
-      if (!message) {
-        showFeedback('Please enter project parameters and details.', 'error');
+      if (!message || message.length > 2000) {
+        showFeedback('Please enter your project details (1-2000 characters).', 'error');
         return;
       }
 
