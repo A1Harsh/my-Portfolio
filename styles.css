@@ -1851,6 +1851,16 @@ kbd { background: var(--border-color); padding: 0.15rem 0.35rem; border-radius: 
 .m-val { font-size: 1.5rem; font-weight: 800; display: block; }
 .m-lbl { font-size: 0.78rem; color: var(--text-muted); }
 
+.cs-footer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-color);
+}
+
 /* Printable Resume & Exact PDF View Replica */
 .resume-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
 #resume-modal .resume-card {

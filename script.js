@@ -299,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const csSpecs = document.getElementById('cs-specs');
   const csTech = document.getElementById('cs-tech');
   const csGithubLink = document.getElementById('cs-github-link');
+  const csDemoLink = document.getElementById('cs-demo-link');
 
   const caseStudyData = {
     p1: {
@@ -311,7 +312,8 @@ document.addEventListener('DOMContentLoaded', () => {
         "Protected admin portal with JWT token session management."
       ],
       tech: ["React", "Node.js", "Express", "PostgreSQL", "Razorpay API"],
-      github: "https://github.com/harshsathvara134-cpu"
+      github: "https://github.com/A1Harsh/online-shopping-system",
+      demo: "https://a1harsh.github.io/online-shopping-system/"
     },
     p2: {
       title: "NeuroChat Enterprise RAG Agent",
@@ -323,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "WebSocket connection for live character token streaming."
       ],
       tech: ["Python", "LangChain", "Pinecone DB", "FastAPI", "OpenAI GPT-4o"],
-      github: "https://github.com/harshsathvara134-cpu"
+      github: "https://github.com/A1Harsh"
     },
     p3: {
       title: "KingRemedies Masale",
@@ -335,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "PHP 8.2 backend with MySQL indexing and clean REST architecture."
       ],
       tech: ["PHP 8.2", "MySQL", "Tailwind CSS", "ApexCharts", "REST API"],
-      github: "https://github.com/harshsathvara134-cpu"
+      github: "https://github.com/A1Harsh"
     },
     p4: {
       title: "CyberVision Real-Time Image Inspector",
@@ -347,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "Sub-15ms image preprocessing pipeline."
       ],
       tech: ["Python", "OpenCV", "TensorFlow", "FastAPI", "WebSockets"],
-      github: "https://github.com/harshsathvara134-cpu"
+      github: "https://github.com/A1Harsh"
     }
   };
 
@@ -359,7 +361,15 @@ document.addEventListener('DOMContentLoaded', () => {
     csProblem.textContent = data.problem;
     csSpecs.innerHTML = data.specs.map(s => `<li>${s}</li>`).join('');
     csTech.innerHTML = data.tech.map(t => `<span class="tech-tag">${t}</span>`).join('');
-    if (csGithubLink) csGithubLink.href = data.github;
+    if (csGithubLink) csGithubLink.href = data.github || "https://github.com/A1Harsh";
+    if (csDemoLink) {
+      if (data.demo) {
+        csDemoLink.href = data.demo;
+        csDemoLink.style.display = 'inline-flex';
+      } else {
+        csDemoLink.style.display = 'none';
+      }
+    }
 
     caseStudyModal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
@@ -432,7 +442,8 @@ document.addEventListener('DOMContentLoaded', () => {
     { label: "Go to Contact Form", action: () => { location.hash = '#contact'; closeModals(); } },
     { label: "View Executive Resume", action: () => { openResumeModal(); } },
     { label: "Toggle Dark / Light Theme", action: () => { if (themeToggleBtn) themeToggleBtn.click(); closeModals(); } },
-    { label: "Open GitHub Profile", action: () => { window.open("https://github.com/harshsathvara134-cpu", "_blank"); closeModals(); } }
+    { label: "Live Demo: Jayveer E-Commerce (Online Shopping)", action: () => { window.open("https://a1harsh.github.io/online-shopping-system/", "_blank"); closeModals(); } },
+    { label: "Open GitHub Profile", action: () => { window.open("https://github.com/A1Harsh", "_blank"); closeModals(); } }
   ];
 
   const renderCommandResults = (filterText = '') => {
