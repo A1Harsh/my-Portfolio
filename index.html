@@ -404,289 +404,744 @@
     <!-- === SKILLS SECTION === -->
     <section id="skills" class="skills revealer">
       <div class="container">
-        <div class="section-header">
-          <div class="section-tag">Expertise</div>
+        <div class="section-header center-header">
+          <div class="section-tag">
+            <span class="pulse-dot-live"></span> Arsenal & Capabilities
+          </div>
           <h2 class="section-title">Technological Capabilities & Proficiency</h2>
-          <p class="section-subtitle">Grouped skill categories with proficiency indexes, experience tags, and live search filtering.</p>
+          <p class="section-subtitle">A breakdown of production-verified technologies, architectural frameworks, and engineering proficiencies.</p>
+        </div>
+
+        <!-- Cyber Tech Highlights Bar -->
+        <div class="skills-highlight-banner">
+          <div class="sh-stat-item">
+            <div class="sh-icon">⚡</div>
+            <div class="sh-text">
+              <span class="sh-val">18+ Stacks</span>
+              <span class="sh-lbl">Production Ready</span>
+            </div>
+          </div>
+          <div class="sh-divider" aria-hidden="true"></div>
+          <div class="sh-stat-item">
+            <div class="sh-icon">🚀</div>
+            <div class="sh-text">
+              <span class="sh-val">&lt;150ms</span>
+              <span class="sh-lbl">API Latency Target</span>
+            </div>
+          </div>
+          <div class="sh-divider" aria-hidden="true"></div>
+          <div class="sh-stat-item">
+            <div class="sh-icon">🧠</div>
+            <div class="sh-text">
+              <span class="sh-val">RAG & Vector</span>
+              <span class="sh-lbl">Autonomous Agents</span>
+            </div>
+          </div>
+          <div class="sh-divider" aria-hidden="true"></div>
+          <div class="sh-stat-item">
+            <div class="sh-icon">🛡️</div>
+            <div class="sh-text">
+              <span class="sh-val">100% Type-Safe</span>
+              <span class="sh-lbl">Security Hardened</span>
+            </div>
+          </div>
         </div>
 
         <div class="skills-filter-bar">
-          <div class="skills-search-wrapper">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-            </svg>
-            <input type="text" id="skills-search-input" class="skills-search-input" placeholder="Search skills (e.g., React, Python, PostgreSQL)..." aria-label="Search technical skills">
+          <div class="skills-search-row">
+            <div class="skills-search-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+              <input type="text" id="skills-search-input" class="skills-search-input" placeholder="Search technologies (e.g. React, Python, PostgreSQL, LangChain)..." aria-label="Search technical skills">
+              <button id="skills-search-clear" class="search-clear-btn hidden" aria-label="Clear search">&times;</button>
+            </div>
+            <div class="skills-count-pill" id="skills-count-pill">
+              Showing <span id="skills-visible-count">18</span> / 18 Stacks
+            </div>
           </div>
 
           <div class="skill-category-selectors" role="tablist" aria-label="Skill Categories">
-            <button class="skill-category-btn active" data-category="all">All Skills</button>
-            <button class="skill-category-btn" data-category="frontend">Frontend</button>
-            <button class="skill-category-btn" data-category="backend">Backend</button>
-            <button class="skill-category-btn" data-category="database">Databases</button>
-            <button class="skill-category-btn" data-category="ai">AI & ML</button>
-            <button class="skill-category-btn" data-category="cloud">Cloud & DevOps</button>
-            <button class="skill-category-btn" data-category="tools">Tools & Security</button>
+            <button class="skill-category-btn active" data-category="all">
+              <span class="cat-dot dot-all"></span> All Technologies <span class="cat-count">18</span>
+            </button>
+            <button class="skill-category-btn" data-category="frontend">
+              <span class="cat-dot dot-frontend"></span> Frontend <span class="cat-count">4</span>
+            </button>
+            <button class="skill-category-btn" data-category="backend">
+              <span class="cat-dot dot-backend"></span> Backend & APIs <span class="cat-count">4</span>
+            </button>
+            <button class="skill-category-btn" data-category="database">
+              <span class="cat-dot dot-db"></span> Databases <span class="cat-count">3</span>
+            </button>
+            <button class="skill-category-btn" data-category="ai">
+              <span class="cat-dot dot-ai"></span> AI & Vector ML <span class="cat-count">3</span>
+            </button>
+            <button class="skill-category-btn" data-category="cloud">
+              <span class="cat-dot dot-cloud"></span> DevOps & Cloud <span class="cat-count">2</span>
+            </button>
+            <button class="skill-category-btn" data-category="tools">
+              <span class="cat-dot dot-tools"></span> Tools & Security <span class="cat-count">2</span>
+            </button>
           </div>
         </div>
 
         <div id="skills-grid-container" class="skills-grid-container">
-          <!-- FRONTEND SKILLS -->
-          <div class="skill-card-item" data-category="frontend" data-skill-name="javascript es6+">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">⚡</div>
-              <div class="skill-card-info">
-                <h4>JavaScript (ES6+)</h4>
-                <span class="skill-exp-tag">3+ Years Exp.</span>
+          <!-- 1. JAVASCRIPT -->
+          <div class="skill-card-item tilt-card" data-category="frontend" data-skill-name="javascript es6+ js es2024 async await dom event loop">
+            <div class="skill-card-glow-bg glow-js"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-js">
+                <span class="skill-icon">⚡</span>
               </div>
-              <span class="skill-percentage-value">95%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>JavaScript (ES6+)</h4>
+                  <span class="skill-tier-badge tier-master">Master</span>
+                </div>
+                <span class="skill-exp-tag">3+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="95"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="95">95%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-js" data-percentage="95">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">ES2024</span>
+              <span class="kw-tag">Async/Await</span>
+              <span class="kw-tag">Event Loop</span>
+              <span class="kw-tag">DOM Engine</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="frontend" data-skill-name="react.js react">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">⚛️</div>
-              <div class="skill-card-info">
-                <h4>React.js</h4>
-                <span class="skill-exp-tag">3+ Years Exp.</span>
+          <!-- 2. REACT.JS -->
+          <div class="skill-card-item tilt-card" data-category="frontend" data-skill-name="react.js react redux context hooks next.js vite">
+            <div class="skill-card-glow-bg glow-react"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-react">
+                <span class="skill-icon">⚛️</span>
               </div>
-              <span class="skill-percentage-value">92%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>React.js</h4>
+                  <span class="skill-tier-badge tier-architect">Architect</span>
+                </div>
+                <span class="skill-exp-tag">3+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="92"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="92">92%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-react" data-percentage="92">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Custom Hooks</span>
+              <span class="kw-tag">Context API</span>
+              <span class="kw-tag">Vite & Next</span>
+              <span class="kw-tag">State Engines</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="frontend" data-skill-name="typescript">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">📘</div>
-              <div class="skill-card-info">
-                <h4>TypeScript</h4>
-                <span class="skill-exp-tag">2+ Years Exp.</span>
+          <!-- 3. TYPESCRIPT -->
+          <div class="skill-card-item tilt-card" data-category="frontend" data-skill-name="typescript ts strict typing generics interfaces">
+            <div class="skill-card-glow-bg glow-ts"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-ts">
+                <span class="skill-icon">📘</span>
               </div>
-              <span class="skill-percentage-value">88%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>TypeScript</h4>
+                  <span class="skill-tier-badge tier-advanced">Advanced</span>
+                </div>
+                <span class="skill-exp-tag">2+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="88"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="88">88%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-ts" data-percentage="88">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Strict Typing</span>
+              <span class="kw-tag">Generics</span>
+              <span class="kw-tag">Interfaces</span>
+              <span class="kw-tag">Utility Types</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="frontend" data-skill-name="html5 css3 scss vanilla css flexbox grid">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🎨</div>
-              <div class="skill-card-info">
-                <h4>HTML5 / Modern CSS3</h4>
-                <span class="skill-exp-tag">3+ Years Exp.</span>
+          <!-- 4. HTML5 & CSS3 -->
+          <div class="skill-card-item tilt-card" data-category="frontend" data-skill-name="html5 css3 scss vanilla css flexbox grid animations responsive">
+            <div class="skill-card-glow-bg glow-css"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-css">
+                <span class="skill-icon">🎨</span>
               </div>
-              <span class="skill-percentage-value">96%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>HTML5 & Modern CSS3</h4>
+                  <span class="skill-tier-badge tier-master">Master</span>
+                </div>
+                <span class="skill-exp-tag">3+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="96"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="96">96%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-css" data-percentage="96">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">CSS Grid</span>
+              <span class="kw-tag">Flexbox</span>
+              <span class="kw-tag">Keyframe FX</span>
+              <span class="kw-tag">Design Tokens</span>
             </div>
           </div>
 
-          <!-- BACKEND SKILLS -->
-          <div class="skill-card-item" data-category="backend" data-skill-name="node.js express.js backend">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🟩</div>
-              <div class="skill-card-info">
-                <h4>Node.js / Express</h4>
-                <span class="skill-exp-tag">3+ Years Exp.</span>
+          <!-- 5. NODE.JS & EXPRESS -->
+          <div class="skill-card-item tilt-card" data-category="backend" data-skill-name="node.js node express.js backend microservices async io">
+            <div class="skill-card-glow-bg glow-node"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-node">
+                <span class="skill-icon">🟩</span>
               </div>
-              <span class="skill-percentage-value">90%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>Node.js & Express</h4>
+                  <span class="skill-tier-badge tier-architect">Architect</span>
+                </div>
+                <span class="skill-exp-tag">3+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="90"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="90">90%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-node" data-percentage="90">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Async I/O</span>
+              <span class="kw-tag">Microservices</span>
+              <span class="kw-tag">Streams</span>
+              <span class="kw-tag">Middlewares</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="backend" data-skill-name="python fastapi flask">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🐍</div>
-              <div class="skill-card-info">
-                <h4>Python (FastAPI & Flask)</h4>
-                <span class="skill-exp-tag">3+ Years Exp.</span>
+          <!-- 6. PYTHON FASTAPI & FLASK -->
+          <div class="skill-card-item tilt-card" data-category="backend" data-skill-name="python fastapi flask async pydantic backend ai">
+            <div class="skill-card-glow-bg glow-py"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-py">
+                <span class="skill-icon">🐍</span>
               </div>
-              <span class="skill-percentage-value">88%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>Python (FastAPI & Flask)</h4>
+                  <span class="skill-tier-badge tier-advanced">Advanced</span>
+                </div>
+                <span class="skill-exp-tag">3+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="88"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="88">88%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-py" data-percentage="88">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">FastAPI Async</span>
+              <span class="kw-tag">Pydantic</span>
+              <span class="kw-tag">Flask APIs</span>
+              <span class="kw-tag">PyTest Suite</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="backend" data-skill-name="php 8.2 backend">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🐘</div>
-              <div class="skill-card-info">
-                <h4>PHP 8.2 Backend</h4>
-                <span class="skill-exp-tag">2+ Years Exp.</span>
+          <!-- 7. PHP 8.2 BACKEND -->
+          <div class="skill-card-item tilt-card" data-category="backend" data-skill-name="php 8.2 backend oop pdo mysql sessions">
+            <div class="skill-card-glow-bg glow-php"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-php">
+                <span class="skill-icon">🐘</span>
               </div>
-              <span class="skill-percentage-value">85%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>PHP 8.2 Backend</h4>
+                  <span class="skill-tier-badge tier-production">Production</span>
+                </div>
+                <span class="skill-exp-tag">2+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="85"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="85">85%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-php" data-percentage="85">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">OOP PHP</span>
+              <span class="kw-tag">PDO MySQL</span>
+              <span class="kw-tag">Session Auth</span>
+              <span class="kw-tag">RESTful Routing</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="backend" data-skill-name="rest api microservices webhooks jwt">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🔌</div>
-              <div class="skill-card-info">
-                <h4>REST APIs & JWT Auth</h4>
-                <span class="skill-exp-tag">3+ Years Exp.</span>
+          <!-- 8. REST APIS & JWT AUTH -->
+          <div class="skill-card-item tilt-card" data-category="backend" data-skill-name="rest api microservices webhooks jwt cors rate limiting security">
+            <div class="skill-card-glow-bg glow-api"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-api">
+                <span class="skill-icon">🔌</span>
               </div>
-              <span class="skill-percentage-value">94%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>REST APIs & JWT Auth</h4>
+                  <span class="skill-tier-badge tier-architect">Architect</span>
+                </div>
+                <span class="skill-exp-tag">3+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="94"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="94">94%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-api" data-percentage="94">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Rate Limiting</span>
+              <span class="kw-tag">Webhooks</span>
+              <span class="kw-tag">CORS Guard</span>
+              <span class="kw-tag">OAuth2 / JWT</span>
             </div>
           </div>
 
-          <!-- DATABASE SKILLS -->
-          <div class="skill-card-item" data-category="database" data-skill-name="postgresql postgres sql database">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🐘</div>
-              <div class="skill-card-info">
-                <h4>PostgreSQL</h4>
-                <span class="skill-exp-tag">3+ Years Exp.</span>
+          <!-- 9. POSTGRESQL -->
+          <div class="skill-card-item tilt-card" data-category="database" data-skill-name="postgresql postgres sql database indexing query optimization acid">
+            <div class="skill-card-glow-bg glow-postgres"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-postgres">
+                <span class="skill-icon">🐘</span>
               </div>
-              <span class="skill-percentage-value">88%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>PostgreSQL</h4>
+                  <span class="skill-tier-badge tier-advanced">Advanced</span>
+                </div>
+                <span class="skill-exp-tag">3+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="88"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="88">88%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-postgres" data-percentage="88">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Index Tuning</span>
+              <span class="kw-tag">Query Plans</span>
+              <span class="kw-tag">ACID Integrity</span>
+              <span class="kw-tag">Foreign Keys</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="database" data-skill-name="mysql database indexing">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🐬</div>
-              <div class="skill-card-info">
-                <h4>MySQL</h4>
-                <span class="skill-exp-tag">3+ Years Exp.</span>
+          <!-- 10. MYSQL -->
+          <div class="skill-card-item tilt-card" data-category="database" data-skill-name="mysql database sql indexing procedures replication">
+            <div class="skill-card-glow-bg glow-mysql"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-mysql">
+                <span class="skill-icon">🐬</span>
               </div>
-              <span class="skill-percentage-value">90%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>MySQL</h4>
+                  <span class="skill-tier-badge tier-advanced">Advanced</span>
+                </div>
+                <span class="skill-exp-tag">3+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="90"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="90">90%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-mysql" data-percentage="90">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Relational Schemas</span>
+              <span class="kw-tag">Stored Procs</span>
+              <span class="kw-tag">B-Tree Indexes</span>
+              <span class="kw-tag">Migrations</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="database" data-skill-name="pinecone vector database RAG embeddings">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🌲</div>
-              <div class="skill-card-info">
-                <h4>Pinecone Vector DB</h4>
-                <span class="skill-exp-tag">2+ Years Exp.</span>
+          <!-- 11. PINECONE VECTOR DB -->
+          <div class="skill-card-item tilt-card" data-category="database" data-skill-name="pinecone vector database RAG embeddings cosine similarity ai">
+            <div class="skill-card-glow-bg glow-pinecone"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-pinecone">
+                <span class="skill-icon">🌲</span>
               </div>
-              <span class="skill-percentage-value">84%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>Pinecone Vector DB</h4>
+                  <span class="skill-tier-badge tier-specialist">Specialist</span>
+                </div>
+                <span class="skill-exp-tag">2+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="84"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="84">84%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-pinecone" data-percentage="84">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Embeddings</span>
+              <span class="kw-tag">Cosine Search</span>
+              <span class="kw-tag">RAG Pipelines</span>
+              <span class="kw-tag">Namespaces</span>
             </div>
           </div>
 
-          <!-- AI & ML SKILLS -->
-          <div class="skill-card-item" data-category="ai" data-skill-name="langchain RAG conversational agents llm">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🦜</div>
-              <div class="skill-card-info">
-                <h4>LangChain & RAG Agents</h4>
-                <span class="skill-exp-tag">2+ Years Exp.</span>
+          <!-- 12. LANGCHAIN & RAG AGENTS -->
+          <div class="skill-card-item tilt-card" data-category="ai" data-skill-name="langchain RAG conversational agents llm prompt chains embeddings">
+            <div class="skill-card-glow-bg glow-langchain"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-langchain">
+                <span class="skill-icon">🦜</span>
               </div>
-              <span class="skill-percentage-value">88%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>LangChain & RAG Agents</h4>
+                  <span class="skill-tier-badge tier-specialist">Specialist</span>
+                </div>
+                <span class="skill-exp-tag">2+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="88"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="88">88%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-langchain" data-percentage="88">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Prompt Chains</span>
+              <span class="kw-tag">Vector Retrieval</span>
+              <span class="kw-tag">Zero-Hallucination</span>
+              <span class="kw-tag">Document Chunks</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="ai" data-skill-name="openai api claude anthropic prompt engineering">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🧠</div>
-              <div class="skill-card-info">
-                <h4>OpenAI & Claude SDKs</h4>
-                <span class="skill-exp-tag">2+ Years Exp.</span>
+          <!-- 13. OPENAI & CLAUDE SDKS -->
+          <div class="skill-card-item tilt-card" data-category="ai" data-skill-name="openai api claude anthropic prompt engineering gpt-4o function calling streaming">
+            <div class="skill-card-glow-bg glow-ai"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-ai">
+                <span class="skill-icon">🧠</span>
               </div>
-              <span class="skill-percentage-value">92%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>OpenAI & Claude SDKs</h4>
+                  <span class="skill-tier-badge tier-architect">Architect</span>
+                </div>
+                <span class="skill-exp-tag">2+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="92"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="92">92%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-ai" data-percentage="92">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Function Calling</span>
+              <span class="kw-tag">Token Streaming</span>
+              <span class="kw-tag">Agent Routing</span>
+              <span class="kw-tag">JSON Schema</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="ai" data-skill-name="opencv yolo tensorflow vision models">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">👁️</div>
-              <div class="skill-card-info">
-                <h4>OpenCV & TensorFlow Vision</h4>
-                <span class="skill-exp-tag">2+ Years Exp.</span>
+          <!-- 14. OPENCV & TENSORFLOW VISION -->
+          <div class="skill-card-item tilt-card" data-category="ai" data-skill-name="opencv yolo tensorflow vision models computer vision object detection">
+            <div class="skill-card-glow-bg glow-vision"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-vision">
+                <span class="skill-icon">👁️</span>
               </div>
-              <span class="skill-percentage-value">80%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>OpenCV & TensorFlow Vision</h4>
+                  <span class="skill-tier-badge tier-advanced">Advanced</span>
+                </div>
+                <span class="skill-exp-tag">2+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="80"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="80">80%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-vision" data-percentage="80">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Object Detection</span>
+              <span class="kw-tag">Bounding Boxes</span>
+              <span class="kw-tag">Tensor Streams</span>
+              <span class="kw-tag">Preprocessing</span>
             </div>
           </div>
 
-          <!-- CLOUD & DEVOPS -->
-          <div class="skill-card-item" data-category="cloud" data-skill-name="git github version control ci/cd">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🐙</div>
-              <div class="skill-card-info">
-                <h4>Git & GitHub CI/CD</h4>
-                <span class="skill-exp-tag">3+ Years Exp.</span>
+          <!-- 15. GIT & GITHUB CI/CD -->
+          <div class="skill-card-item tilt-card" data-category="cloud" data-skill-name="git github version control ci/cd actions workflows">
+            <div class="skill-card-glow-bg glow-git"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-git">
+                <span class="skill-icon">🐙</span>
               </div>
-              <span class="skill-percentage-value">92%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>Git & GitHub CI/CD</h4>
+                  <span class="skill-tier-badge tier-master">Master</span>
+                </div>
+                <span class="skill-exp-tag">3+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="92"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="92">92%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-git" data-percentage="92">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">GitHub Actions</span>
+              <span class="kw-tag">Branch Control</span>
+              <span class="kw-tag">Release Pipelines</span>
+              <span class="kw-tag">Code Audits</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="cloud" data-skill-name="docker vercel render google cloud">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">☁️</div>
-              <div class="skill-card-info">
-                <h4>Vercel, Render & Docker</h4>
-                <span class="skill-exp-tag">2+ Years Exp.</span>
+          <!-- 16. DOCKER & VERCEL / RENDER -->
+          <div class="skill-card-item tilt-card" data-category="cloud" data-skill-name="docker vercel render google cloud containerization devops">
+            <div class="skill-card-glow-bg glow-cloud"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-cloud">
+                <span class="skill-icon">☁️</span>
               </div>
-              <span class="skill-percentage-value">85%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>Vercel, Render & Docker</h4>
+                  <span class="skill-tier-badge tier-production">Production</span>
+                </div>
+                <span class="skill-exp-tag">2+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="85"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="85">85%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-cloud" data-percentage="85">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Containerization</span>
+              <span class="kw-tag">Edge Hosting</span>
+              <span class="kw-tag">Dockerfiles</span>
+              <span class="kw-tag">Env Isolation</span>
             </div>
           </div>
 
-          <!-- TOOLS & SECURITY -->
-          <div class="skill-card-item" data-category="tools" data-skill-name="figma ui ux prototyping wireframes">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">❖</div>
-              <div class="skill-card-info">
-                <h4>Figma Prototyping & UI</h4>
-                <span class="skill-exp-tag">2+ Years Exp.</span>
+          <!-- 17. FIGMA PROTOTYPING & UI -->
+          <div class="skill-card-item tilt-card" data-category="tools" data-skill-name="figma ui ux prototyping wireframes design systems responsive">
+            <div class="skill-card-glow-bg glow-figma"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-figma">
+                <span class="skill-icon">❖</span>
               </div>
-              <span class="skill-percentage-value">85%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>Figma Prototyping & UI</h4>
+                  <span class="skill-tier-badge tier-advanced">Advanced</span>
+                </div>
+                <span class="skill-exp-tag">2+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="85"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="85">85%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-figma" data-percentage="85">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Design Systems</span>
+              <span class="kw-tag">Tokens & Auto-Layout</span>
+              <span class="kw-tag">Wireframes</span>
+              <span class="kw-tag">Component Specs</span>
             </div>
           </div>
 
-          <div class="skill-card-item" data-category="tools" data-skill-name="postman API testing security sanitization">
-            <div class="skill-card-top">
-              <div class="skill-icon-box">🛡️</div>
-              <div class="skill-card-info">
-                <h4>Postman & API Security</h4>
-                <span class="skill-exp-tag">3+ Years Exp.</span>
+          <!-- 18. POSTMAN & API SECURITY -->
+          <div class="skill-card-item tilt-card" data-category="tools" data-skill-name="postman API testing security sanitization owasp automated tests">
+            <div class="skill-card-glow-bg glow-security"></div>
+            <div class="skill-card-header">
+              <div class="skill-icon-halo icon-security">
+                <span class="skill-icon">🛡️</span>
               </div>
-              <span class="skill-percentage-value">92%</span>
+              <div class="skill-card-meta">
+                <div class="skill-name-row">
+                  <h4>Postman & API Security</h4>
+                  <span class="skill-tier-badge tier-master">Master</span>
+                </div>
+                <span class="skill-exp-tag">3+ Years Production Exp.</span>
+              </div>
             </div>
-            <div class="skill-progress-bg">
-              <div class="skill-progress-bar" data-percentage="92"></div>
+
+            <div class="skill-meter-box">
+              <div class="meter-info">
+                <span class="meter-label">Proficiency Index</span>
+                <span class="skill-percentage-value" data-target-pct="92">92%</span>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-bar bar-security" data-percentage="92">
+                  <span class="progress-glow-head"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-keywords-row">
+              <span class="kw-tag">Automated Tests</span>
+              <span class="kw-tag">Input Sanitization</span>
+              <span class="kw-tag">OWASP Audit</span>
+              <span class="kw-tag">Load Stress</span>
             </div>
           </div>
+        </div>
+
+        <!-- Empty Search State -->
+        <div id="skills-empty-state" class="skills-empty-state hidden">
+          <div class="empty-icon">🔍</div>
+          <h4>No matching skills found</h4>
+          <p>Try searching for other terms like "React", "Python", "SQL", or "Docker".</p>
+          <button id="skills-reset-btn" class="btn btn-outline btn-sm">Clear Search Filter</button>
         </div>
       </div>
     </section>

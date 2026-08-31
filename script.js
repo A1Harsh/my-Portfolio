@@ -210,28 +210,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ==================== 7. SKILLS FILTER & SEARCH ====================
+  // ==================== 7. SKILLS FILTER, SEARCH & 3D TILT ====================
   const skillCategoryBtns = document.querySelectorAll('.skill-category-selectors .skill-category-btn');
   const skillItems = document.querySelectorAll('.skill-card-item');
   const skillsSearchInput = document.getElementById('skills-search-input');
+  const skillsSearchClear = document.getElementById('skills-search-clear');
+  const skillsVisibleCount = document.getElementById('skills-visible-count');
+  const skillsEmptyState = document.getElementById('skills-empty-state');
+  const skillsResetBtn = document.getElementById('skills-reset-btn');
 
   function filterSkills() {
-    const activeCategory = document.querySelector('.skill-category-selectors .skill-category-btn.active').getAttribute('data-category');
+    const activeBtn = document.querySelector('.skill-category-selectors .skill-category-btn.active');
+    const activeCategory = activeBtn ? activeBtn.getAttribute('data-category') : 'all';
     const query = skillsSearchInput ? skillsSearchInput.value.toLowerCase().trim() : '';
+
+    if (skillsSearchClear) {
+      if (query.length > 0) {
+        skillsSearchClear.classList.remove('hidden');
+      } else {
+        skillsSearchClear.classList.add('hidden');
+      }
+    }
+
+    let visibleCount = 0;
 
     skillItems.forEach(item => {
       const category = item.getAttribute('data-category');
-      const skillName = item.getAttribute('data-skill-name');
+      const skillName = (item.getAttribute('data-skill-name') || '').toLowerCase();
 
       const matchesCategory = (activeCategory === 'all' || category === activeCategory);
       const matchesSearch = query === '' || skillName.includes(query);
 
       if (matchesCategory && matchesSearch) {
-        item.style.display = 'block';
+        item.classList.remove('hidden');
+        item.style.display = '';
+        visibleCount++;
       } else {
+        item.classList.add('hidden');
         item.style.display = 'none';
       }
     });
+
+    if (skillsVisibleCount) {
+      skillsVisibleCount.textContent = visibleCount.toString();
+    }
+
+    if (skillsEmptyState) {
+      if (visibleCount === 0) {
+        skillsEmptyState.classList.remove('hidden');
+      } else {
+        skillsEmptyState.classList.add('hidden');
+      }
+    }
   }
 
   skillCategoryBtns.forEach(btn => {
@@ -246,7 +276,47 @@ document.addEventListener('DOMContentLoaded', () => {
     skillsSearchInput.addEventListener('input', filterSkills);
   }
 
-  // Animate skill bars on scroll
+  if (skillsSearchClear) {
+    skillsSearchClear.addEventListener('click', () => {
+      if (skillsSearchInput) {
+        skillsSearchInput.value = '';
+        skillsSearchInput.focus();
+        filterSkills();
+      }
+    });
+  }
+
+  if (skillsResetBtn) {
+    skillsResetBtn.addEventListener('click', () => {
+      if (skillsSearchInput) skillsSearchInput.value = '';
+      skillCategoryBtns.forEach(b => b.classList.remove('active'));
+      const allBtn = document.querySelector('.skill-category-selectors .skill-category-btn[data-category="all"]');
+      if (allBtn) allBtn.classList.add('active');
+      filterSkills();
+    });
+  }
+
+  // 3D Tilt Card Interaction for Skills Cards
+  skillItems.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -5;
+      const rotateY = ((x - centerX) / centerX) * 5;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
+  // Animate skill bars and percentage numbers on scroll
   const skillBars = document.querySelectorAll('.skill-progress-bar');
   const skillsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -254,9 +324,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const bar = entry.target;
         const percentage = bar.getAttribute('data-percentage');
         bar.style.width = `${percentage}%`;
+
+        const pctValEl = bar.closest('.skill-meter-box') ? bar.closest('.skill-meter-box').querySelector('.skill-percentage-value') : null;
+        if (pctValEl && !pctValEl.dataset.animated) {
+          pctValEl.dataset.animated = 'true';
+          const targetNum = parseInt(percentage, 10);
+          let currentNum = 0;
+          const step = Math.ceil(targetNum / 30);
+          const interval = setInterval(() => {
+            currentNum += step;
+            if (currentNum >= targetNum) {
+              currentNum = targetNum;
+              clearInterval(interval);
+            }
+            pctValEl.textContent = `${currentNum}%`;
+          }, 25);
+        }
       }
     });
-  }, { threshold: 0.2 });
+  }, { threshold: 0.15 });
 
   skillBars.forEach(bar => skillsObserver.observe(bar));
 
