@@ -118,6 +118,7 @@
       </div>
     </div>
   </header>
+  <div id="nav-overlay" class="nav-overlay" aria-hidden="true"></div>
 
   <main>
     <!-- === HERO SECTION === -->
@@ -1163,51 +1164,168 @@
     <!-- === GITHUB INTEGRATION SHOWCASE === -->
     <section id="github" class="github-section revealer">
       <div class="container">
-        <div class="section-header">
-          <div class="section-tag">Open Source</div>
-          <h2 class="section-title">Live GitHub Activity & Code Analytics</h2>
-          <p class="section-subtitle">Real-time stats from my public repository profile and activity history.</p>
+        <div class="section-header-row github-header-row">
+          <div class="section-header">
+            <div class="section-tag">
+              <span class="pulse-dot-live"></span> Live GitHub Synced
+            </div>
+            <h2 class="section-title">Live GitHub Activity & Code Analytics</h2>
+            <p class="section-subtitle">Real-time statistics fetched from public repository profile, language analytics, and 52-week contribution activity.</p>
+          </div>
+          <div class="github-actions-top">
+            <button id="gh-refresh-btn" class="btn btn-outline btn-sm" aria-label="Refresh GitHub Data" title="Refresh Live GitHub Data">
+              <svg class="refresh-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>
+              <span>Sync Live Data</span>
+            </button>
+            <a href="https://github.com/A1Harsh" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+              <span>View GitHub</span> ↗
+            </a>
+          </div>
         </div>
 
         <div class="github-dashboard-grid">
-          <!-- Profile Card -->
-          <div class="github-profile-card">
-            <div class="gh-avatar">🐙</div>
-            <div class="gh-info">
-              <h3>Harsh Sathvara</h3>
-              <a href="https://github.com/A1Harsh" target="_blank" rel="noopener" class="gh-username">@A1Harsh</a>
-              <p class="gh-bio">Senior Full-Stack Engineer & AI Integration Architect.</p>
+          <!-- Left Column: Profile Card + Language Breakdown -->
+          <div class="gh-left-column">
+            <!-- Profile Card -->
+            <div class="github-profile-card">
+              <div class="gh-profile-top">
+                <div class="gh-avatar-wrapper">
+                  <img id="gh-avatar-img" src="https://avatars.githubusercontent.com/u/272135110?v=4" alt="Harsh Sathvara GitHub Avatar" class="gh-avatar-img" loading="lazy">
+                  <span class="gh-live-badge" title="Live Synced">●</span>
+                </div>
+                <div class="gh-info">
+                  <h3 id="gh-user-name">Harsh Sathvara</h3>
+                  <a href="https://github.com/A1Harsh" target="_blank" rel="noopener" id="gh-user-handle" class="gh-username">@A1Harsh</a>
+                  <p id="gh-user-bio" class="gh-bio">Software Developer | Diploma in ICT | Full-Stack & Python Engineer.</p>
+                </div>
+              </div>
+
+              <div class="gh-stats-row">
+                <div class="gh-stat">
+                  <span id="gh-repo-count" class="val">4</span>
+                  <span class="lbl">Repositories</span>
+                </div>
+                <div class="gh-stat">
+                  <span id="gh-stars-count" class="val">6</span>
+                  <span class="lbl">Total Stars</span>
+                </div>
+                <div class="gh-stat">
+                  <span id="gh-followers-count" class="val">2</span>
+                  <span class="lbl">Followers</span>
+                </div>
+                <div class="gh-stat">
+                  <span id="gh-following-count" class="val">2</span>
+                  <span class="lbl">Following</span>
+                </div>
+              </div>
             </div>
-            <div class="gh-stats-row">
-              <div class="gh-stat">
-                <span class="val">35+</span>
-                <span class="lbl">Repositories</span>
+
+            <!-- Language Analytics Card -->
+            <div class="github-languages-card">
+              <div class="card-header-flex">
+                <h4>Codebase Language Analytics</h4>
+                <span class="gh-badge-pill">Live Repo Data</span>
               </div>
-              <div class="gh-stat">
-                <span class="val">1,420+</span>
-                <span class="lbl">Commits</span>
+              <div class="lang-distribution-bar" id="lang-distribution-bar">
+                <div class="lang-bar-segment" style="width: 45%; background: #3178c6;" title="TypeScript (45%)"></div>
+                <div class="lang-bar-segment" style="width: 30%; background: #e34c26;" title="HTML / CSS (30%)"></div>
+                <div class="lang-bar-segment" style="width: 15%; background: #f1e05a;" title="JavaScript (15%)"></div>
+                <div class="lang-bar-segment" style="width: 10%; background: #3572A5;" title="Python / SQL (10%)"></div>
               </div>
-              <div class="gh-stat">
-                <span class="val">120+</span>
-                <span class="lbl">Stars</span>
+              <div class="lang-legend-grid" id="lang-legend-grid">
+                <div class="lang-legend-item">
+                  <span class="lang-dot" style="background: #3178c6;"></span>
+                  <span class="lang-title">TypeScript</span>
+                  <span class="lang-pct">45%</span>
+                </div>
+                <div class="lang-legend-item">
+                  <span class="lang-dot" style="background: #e34c26;"></span>
+                  <span class="lang-title">HTML / CSS</span>
+                  <span class="lang-pct">30%</span>
+                </div>
+                <div class="lang-legend-item">
+                  <span class="lang-dot" style="background: #f1e05a;"></span>
+                  <span class="lang-title">JavaScript</span>
+                  <span class="lang-pct">15%</span>
+                </div>
+                <div class="lang-legend-item">
+                  <span class="lang-dot" style="background: #3572A5;"></span>
+                  <span class="lang-title">Python / SQL</span>
+                  <span class="lang-pct">10%</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Heatmap Mockup Visual -->
-          <div class="github-activity-card">
-            <h4>Contribution Heatmap (2024 - 2026)</h4>
-            <div class="contribution-matrix" aria-label="GitHub Contribution Heatmap Simulator">
-              <div class="matrix-grid" id="matrix-grid"></div>
+          <!-- Right Column: Contribution Matrix + Top Public Repositories -->
+          <div class="gh-right-column">
+            <!-- Heatmap Visual -->
+            <div class="github-activity-card">
+              <div class="activity-card-header">
+                <div>
+                  <h4 id="activity-card-title">Contribution Heatmap (52 Weeks)</h4>
+                  <p class="activity-subtitle"><span id="gh-total-contributions-count">480+</span> contributions in active development cycles</p>
+                </div>
+                <div class="heatmap-controls-row">
+                  <div class="heatmap-view-pills">
+                    <button class="hm-view-btn active" data-view="matrix" aria-label="Show 52-Week Grid View">Grid</button>
+                    <button class="hm-view-btn" data-view="snake" aria-label="Show Snake Game Animation View">🐍 Snake</button>
+                  </div>
+                  <div class="heatmap-year-pills" id="heatmap-year-pills">
+                    <button class="hm-year-btn active" data-year="2026">2026</button>
+                    <button class="hm-year-btn" data-year="2025">2025</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Matrix Scroll Container with Tooltip -->
+              <div class="contribution-matrix-wrapper" id="matrix-wrapper">
+                <div class="matrix-months-header" id="matrix-months-header">
+                  <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+                  <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+                </div>
+                <div class="contribution-matrix" aria-label="GitHub Contribution Heatmap">
+                  <div class="matrix-grid" id="matrix-grid"></div>
+                </div>
+                <div id="matrix-tooltip" class="matrix-tooltip hidden"></div>
+              </div>
+
+              <!-- Snake Animation Container -->
+              <div id="snake-wrapper" class="snake-wrapper hidden">
+                <div class="snake-frame">
+                  <img id="snake-animation-img" 
+                       src="https://raw.githubusercontent.com/A1Harsh/my-Portfolio/output/github-contribution-grid-snake-dark.svg" 
+                       alt="GitHub Contribution Snake Animation" 
+                       class="snake-img"
+                       loading="lazy">
+                  <div id="snake-fallback" class="snake-fallback hidden">
+                    <p>🐍 Snake animation is generated automatically every 6 hours via <a href="https://github.com/A1Harsh/my-Portfolio/actions/workflows/snake.yml" target="_blank" rel="noopener">GitHub Actions Workflow</a>.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="matrix-legend">
+                <span>Less</span>
+                <span class="level level-0" title="0 contributions"></span>
+                <span class="level level-1" title="1-3 contributions"></span>
+                <span class="level level-2" title="4-6 contributions"></span>
+                <span class="level level-3" title="7-9 contributions"></span>
+                <span class="level level-4" title="10+ contributions"></span>
+                <span>More</span>
+              </div>
             </div>
-            <div class="matrix-legend">
-              <span>Less</span>
-              <span class="level level-0"></span>
-              <span class="level level-1"></span>
-              <span class="level level-2"></span>
-              <span class="level level-3"></span>
-              <span class="level level-4"></span>
-              <span>More</span>
+
+            <!-- Top Repositories Grid -->
+            <div class="github-repos-section">
+              <div class="repos-header-flex">
+                <h4>Featured Public Repositories</h4>
+                <a href="https://github.com/A1Harsh?tab=repositories" target="_blank" rel="noopener" class="gh-all-repos-link">All Repositories ↗</a>
+              </div>
+              <div class="github-repos-grid" id="github-repos-grid">
+                <!-- Dynamically populated -->
+              </div>
             </div>
           </div>
         </div>

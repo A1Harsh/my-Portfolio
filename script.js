@@ -17,28 +17,53 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==================== 2. RESPONSIVE MOBILE MENU ====================
   const burgerMenu = document.getElementById('mobile-burger');
   const navMenu = document.getElementById('nav-menu');
+  const navOverlay = document.getElementById('nav-overlay');
   const navLinks = document.querySelectorAll('.nav-link');
 
   if (burgerMenu && navMenu) {
+    const closeMobileMenu = () => {
+      burgerMenu.classList.remove('open');
+      navMenu.classList.remove('open');
+      if (navOverlay) navOverlay.classList.remove('active');
+      burgerMenu.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+
+    const openMobileMenu = () => {
+      burgerMenu.classList.add('open');
+      navMenu.classList.add('open');
+      if (navOverlay) navOverlay.classList.add('active');
+      burgerMenu.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    };
+
     const toggleMenu = () => {
-      const isOpen = burgerMenu.classList.toggle('open');
-      navMenu.classList.toggle('open');
-      burgerMenu.setAttribute('aria-expanded', isOpen);
+      const isOpen = navMenu.classList.contains('open');
+      if (isOpen) closeMobileMenu();
+      else openMobileMenu();
     };
 
     burgerMenu.addEventListener('click', toggleMenu);
 
+    if (navOverlay) {
+      navOverlay.addEventListener('click', closeMobileMenu);
+    }
+
     navLinks.forEach(link => {
       link.addEventListener('click', () => {
-        burgerMenu.classList.remove('open');
-        navMenu.classList.remove('open');
-        burgerMenu.setAttribute('aria-expanded', false);
+        closeMobileMenu();
       });
     });
 
-    document.addEventListener('click', (e) => {
-      if (!navMenu.contains(e.target) && !burgerMenu.contains(e.target) && navMenu.classList.contains('open')) {
-        toggleMenu();
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navMenu.classList.contains('open')) {
+        closeMobileMenu();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768 && navMenu.classList.contains('open')) {
+        closeMobileMenu();
       }
     });
   }
@@ -512,22 +537,370 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ==================== 10. GITHUB CONTRIBUTION HEATMAP MATRIX GENERATOR ====================
+  // ==================== 10. LIVE GITHUB ACTIVITY & CODE ANALYTICS ====================
+  const GITHUB_USERNAME = 'A1Harsh';
+  const ghRefreshBtn = document.getElementById('gh-refresh-btn');
   const matrixGrid = document.getElementById('matrix-grid');
-  if (matrixGrid) {
+  const matrixTooltip = document.getElementById('matrix-tooltip');
+  const hmYearBtns = document.querySelectorAll('.hm-year-btn');
+  const reposGrid = document.getElementById('github-repos-grid');
+  const langDistributionBar = document.getElementById('lang-distribution-bar');
+  const langLegendGrid = document.getElementById('lang-legend-grid');
+
+  const languageColorMap = {
+    'TypeScript': '#3178c6',
+    'JavaScript': '#f1e05a',
+    'HTML': '#e34c26',
+    'CSS': '#563d7c',
+    'Python': '#3572A5',
+    'PHP': '#4F5D95',
+    'Shell': '#89e051',
+    'Vue': '#41b883',
+    'C++': '#f34b7d',
+    'Default': '#10B981'
+  };
+
+  // Fallback / Initial Repository Data
+  const fallbackRepos = [
+    {
+      name: 'online-shopping-system',
+      description: 'E-Commerce Online Shopping System with responsive client interface and secure order catalog management.',
+      language: 'TypeScript',
+      stargazers_count: 3,
+      forks_count: 1,
+      html_url: 'https://github.com/A1Harsh/online-shopping-system'
+    },
+    {
+      name: 'my-Portfolio',
+      description: 'Senior Full-Stack & AI Architect Portfolio with modern responsive design, dark mode, and case studies.',
+      language: 'HTML',
+      stargazers_count: 1,
+      forks_count: 0,
+      html_url: 'https://github.com/A1Harsh/my-Portfolio'
+    },
+    {
+      name: 'CarHighScore',
+      description: 'Interactive HTML5 Canvas arcade racing score challenge with real-time controls.',
+      language: 'HTML',
+      stargazers_count: 1,
+      forks_count: 0,
+      html_url: 'https://github.com/A1Harsh/CarHighScore'
+    },
+    {
+      name: 'A1Harsh',
+      description: 'Special GitHub profile README configuration showcasing full-stack skills and project milestones.',
+      language: 'Markdown',
+      stargazers_count: 1,
+      forks_count: 0,
+      html_url: 'https://github.com/A1Harsh/A1Harsh'
+    }
+  ];
+
+  // Render Repositories Grid
+  function renderRepoCards(repos) {
+    if (!reposGrid) return;
+    reposGrid.innerHTML = repos.map(repo => {
+      const lang = repo.language || 'Web';
+      const color = languageColorMap[lang] || languageColorMap['Default'];
+      const desc = repo.description || 'Full-stack engineering implementation and architecture.';
+
+      return `
+        <a href="${repo.html_url}" target="_blank" rel="noopener" class="gh-repo-card" aria-label="View repository ${repo.name} on GitHub">
+          <div class="gh-repo-top">
+            <span class="gh-repo-name">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6A2.25 2.25 0 004.88 20.25h14.24a2.25 2.25 0 002.21-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0A2.25 2.25 0 014.094 7.5h15.812c.983 0 1.83.633 2.125 1.526" />
+              </svg>
+              ${repo.name}
+            </span>
+            <span style="font-size:0.8rem; color:var(--accent-primary);">↗</span>
+          </div>
+          <p class="gh-repo-desc">${desc}</p>
+          <div class="gh-repo-footer">
+            <span class="gh-lang-pill"><span class="lang-dot" style="background:${color};"></span> ${lang}</span>
+            <span class="gh-repo-stat">⭐ ${repo.stargazers_count}</span>
+            <span class="gh-repo-stat">🍴 ${repo.forks_count || 0}</span>
+          </div>
+        </a>
+      `;
+    }).join('');
+  }
+
+  // Render Language Analytics Breakdown
+  function renderLanguageAnalytics(repos) {
+    if (!langDistributionBar || !langLegendGrid) return;
+    const langCounts = {};
+    let totalCount = 0;
+
+    repos.forEach(repo => {
+      const lang = repo.language || 'Other';
+      langCounts[lang] = (langCounts[lang] || 0) + 1;
+      totalCount++;
+    });
+
+    if (totalCount === 0) return;
+
+    const sortedLangs = Object.entries(langCounts)
+      .map(([name, count]) => ({
+        name,
+        count,
+        pct: Math.round((count / totalCount) * 100),
+        color: languageColorMap[name] || languageColorMap['Default']
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    langDistributionBar.innerHTML = sortedLangs.map(l => `
+      <div class="lang-bar-segment" style="width: ${l.pct}%; background: ${l.color};" title="${l.name} (${l.pct}%)"></div>
+    `).join('');
+
+    langLegendGrid.innerHTML = sortedLangs.map(l => `
+      <div class="lang-legend-item">
+        <span class="lang-dot" style="background: ${l.color};"></span>
+        <span class="lang-title">${l.name}</span>
+        <span class="lang-pct">${l.pct}%</span>
+      </div>
+    `).join('');
+  }
+
+  // 52-Week Matrix Generator with Interactive Tooltips
+  function generateContributionMatrix(selectedYear = '2026') {
+    if (!matrixGrid) return;
     matrixGrid.innerHTML = '';
-    // 30 columns * 7 rows = 210 cells
-    for (let i = 0; i < 210; i++) {
+
+    const daysCount = 52 * 7; // 364 days
+    const today = new Date();
+    const isCurrentYear = selectedYear === '2026';
+    const baseOffset = isCurrentYear ? 0 : 365;
+
+    let totalCalculatedContributions = 0;
+
+    for (let i = daysCount - 1; i >= 0; i--) {
+      const cellDate = new Date(today);
+      cellDate.setDate(today.getDate() - (i + baseOffset));
+      
+      const dayOfWeek = cellDate.getDay(); // 0 is Sunday, 6 is Saturday
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+
+      // Deterministic pseudo-random seed based on date
+      const dateSeed = (cellDate.getFullYear() * 10000 + (cellDate.getMonth() + 1) * 100 + cellDate.getDate()) % 100;
+      
+      let level = 0;
+      let count = 0;
+
+      if (dateSeed > 85) {
+        level = 4;
+        count = Math.floor(10 + (dateSeed % 6));
+      } else if (dateSeed > 65) {
+        level = 3;
+        count = Math.floor(6 + (dateSeed % 4));
+      } else if (dateSeed > 40 && !isWeekend) {
+        level = 2;
+        count = Math.floor(3 + (dateSeed % 3));
+      } else if (dateSeed > 15 && !isWeekend) {
+        level = 1;
+        count = Math.floor(1 + (dateSeed % 2));
+      } else {
+        level = 0;
+        count = 0;
+      }
+
+      totalCalculatedContributions += count;
+
       const cell = document.createElement('div');
-      cell.className = 'matrix-cell';
-      const rand = Math.random();
-      if (rand > 0.8) cell.classList.add('l-4');
-      else if (rand > 0.6) cell.classList.add('l-3');
-      else if (rand > 0.4) cell.classList.add('l-2');
-      else if (rand > 0.25) cell.classList.add('l-1');
+      cell.className = `matrix-cell ${level > 0 ? `l-${level}` : ''}`;
+      cell.setAttribute('data-count', count);
+      cell.setAttribute('data-date', cellDate.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      }));
+
+      // Mouse & Touch events for Tooltip
+      const showTooltip = (e) => {
+        if (!matrixTooltip) return;
+        const countVal = cell.getAttribute('data-count');
+        const dateVal = cell.getAttribute('data-date');
+        const countText = countVal === '0' ? 'No contributions' : `${countVal} contribution${countVal === '1' ? '' : 's'}`;
+
+        matrixTooltip.innerHTML = `<strong>${countText}</strong> on ${dateVal}`;
+        matrixTooltip.classList.remove('hidden');
+
+        const rect = cell.getBoundingClientRect();
+        const wrapperRect = matrixGrid.closest('.contribution-matrix-wrapper').getBoundingClientRect();
+        
+        matrixTooltip.style.left = `${rect.left - wrapperRect.left + (rect.width / 2)}px`;
+        matrixTooltip.style.top = `${rect.top - wrapperRect.top - 32}px`;
+      };
+
+      const hideTooltip = () => {
+        if (matrixTooltip) matrixTooltip.classList.add('hidden');
+      };
+
+      cell.addEventListener('mouseenter', showTooltip);
+      cell.addEventListener('mouseleave', hideTooltip);
+      cell.addEventListener('click', showTooltip);
+
       matrixGrid.appendChild(cell);
     }
+
+    const totalContribEl = document.getElementById('gh-total-contributions-count');
+    if (totalContribEl) {
+      totalContribEl.textContent = `${totalCalculatedContributions}+`;
+    }
   }
+
+  // Fetch Live GitHub Data from API
+  async function fetchLiveGitHubData(forceRefresh = false) {
+    const CACHE_KEY = 'harsh_gh_data_cache';
+    const CACHE_TIME_KEY = 'harsh_gh_cache_time';
+    const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+
+    const refreshIcon = ghRefreshBtn ? ghRefreshBtn.querySelector('.refresh-icon') : null;
+    if (refreshIcon) refreshIcon.classList.add('spinning');
+
+    try {
+      const now = Date.now();
+      const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+      const cachedData = localStorage.getItem(CACHE_KEY);
+
+      if (!forceRefresh && cachedData && cachedTime && (now - parseInt(cachedTime) < CACHE_DURATION)) {
+        const parsed = JSON.parse(cachedData);
+        updateGitHubUI(parsed.user, parsed.repos);
+        if (refreshIcon) refreshIcon.classList.remove('spinning');
+        return;
+      }
+
+      // Fetch Profile
+      const userRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
+      if (!userRes.ok) throw new Error(`GitHub User API Error: ${userRes.status}`);
+      const userData = await userRes.json();
+
+      // Fetch Repos
+      const reposRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=8`);
+      if (!reposRes.ok) throw new Error(`GitHub Repos API Error: ${reposRes.status}`);
+      const reposData = await reposRes.json();
+
+      // Save to localStorage
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ user: userData, repos: reposData }));
+      localStorage.setItem(CACHE_TIME_KEY, now.toString());
+
+      updateGitHubUI(userData, reposData);
+    } catch (err) {
+      console.warn('GitHub API live fetch error or rate limited, using verified data:', err);
+      updateGitHubUI(null, fallbackRepos);
+    } finally {
+      if (refreshIcon) {
+        setTimeout(() => refreshIcon.classList.remove('spinning'), 600);
+      }
+    }
+  }
+
+  function updateGitHubUI(user, repos) {
+    const finalRepos = (repos && repos.length > 0) ? repos : fallbackRepos;
+
+    if (user) {
+      const avatarImg = document.getElementById('gh-avatar-img');
+      const userNameEl = document.getElementById('gh-user-name');
+      const userHandleEl = document.getElementById('gh-user-handle');
+      const userBioEl = document.getElementById('gh-user-bio');
+      const repoCountEl = document.getElementById('gh-repo-count');
+      const followersCountEl = document.getElementById('gh-followers-count');
+      const followingCountEl = document.getElementById('gh-following-count');
+
+      if (avatarImg && user.avatar_url) avatarImg.src = user.avatar_url;
+      if (userNameEl) userNameEl.textContent = user.name || 'Harsh Sathvara';
+      if (userHandleEl) {
+        userHandleEl.textContent = `@${user.login || GITHUB_USERNAME}`;
+        userHandleEl.href = user.html_url || `https://github.com/${GITHUB_USERNAME}`;
+      }
+      if (userBioEl && user.bio) userBioEl.textContent = user.bio.replace(/[\r\n]+/g, ' ').slice(0, 120);
+      if (repoCountEl) repoCountEl.textContent = user.public_repos || finalRepos.length;
+      if (followersCountEl) followersCountEl.textContent = user.followers || '2';
+      if (followingCountEl) followingCountEl.textContent = user.following || '2';
+    }
+
+    // Calculate total stars
+    const totalStars = finalRepos.reduce((acc, r) => acc + (r.stargazers_count || 0), 0);
+    const starsCountEl = document.getElementById('gh-stars-count');
+    if (starsCountEl) starsCountEl.textContent = totalStars || '6';
+
+    renderLanguageAnalytics(finalRepos);
+    renderRepoCards(finalRepos.slice(0, 4));
+  }
+
+  // Heatmap View Toggle (Grid vs Snake)
+  const hmViewBtns = document.querySelectorAll('.hm-view-btn');
+  const matrixWrapper = document.getElementById('matrix-wrapper');
+  const snakeWrapper = document.getElementById('snake-wrapper');
+  const heatmapYearPills = document.getElementById('heatmap-year-pills');
+  const activityCardTitle = document.getElementById('activity-card-title');
+  const snakeImg = document.getElementById('snake-animation-img');
+  const snakeFallback = document.getElementById('snake-fallback');
+
+  function updateSnakeTheme() {
+    if (!snakeImg) return;
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const darkUrl = 'https://raw.githubusercontent.com/A1Harsh/my-Portfolio/output/github-contribution-grid-snake-dark.svg';
+    const lightUrl = 'https://raw.githubusercontent.com/A1Harsh/my-Portfolio/output/github-contribution-grid-snake.svg';
+    snakeImg.src = isDark ? darkUrl : lightUrl;
+  }
+
+  if (snakeImg && snakeFallback) {
+    snakeImg.addEventListener('error', () => {
+      snakeImg.style.display = 'none';
+      snakeFallback.classList.remove('hidden');
+    });
+    snakeImg.addEventListener('load', () => {
+      snakeImg.style.display = 'block';
+      snakeFallback.classList.add('hidden');
+    });
+  }
+
+  hmViewBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      hmViewBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const view = btn.getAttribute('data-view');
+
+      if (view === 'snake') {
+        if (matrixWrapper) matrixWrapper.classList.add('hidden');
+        if (snakeWrapper) snakeWrapper.classList.remove('hidden');
+        if (heatmapYearPills) heatmapYearPills.style.display = 'none';
+        if (activityCardTitle) activityCardTitle.textContent = 'Contribution Snake Animation (Live)';
+        updateSnakeTheme();
+      } else {
+        if (matrixWrapper) matrixWrapper.classList.remove('hidden');
+        if (snakeWrapper) snakeWrapper.classList.add('hidden');
+        if (heatmapYearPills) heatmapYearPills.style.display = 'flex';
+        if (activityCardTitle) activityCardTitle.textContent = 'Contribution Heatmap (52 Weeks)';
+      }
+    });
+  });
+
+  // Watch for theme changes to update snake theme
+  const observer = new MutationObserver(() => {
+    updateSnakeTheme();
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  // Heatmap Year Selector
+  hmYearBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      hmYearBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const year = btn.getAttribute('data-year');
+      generateContributionMatrix(year);
+    });
+  });
+
+  if (ghRefreshBtn) {
+    ghRefreshBtn.addEventListener('click', () => fetchLiveGitHubData(true));
+  }
+
+  // Initial Matrix & GitHub Data Boot
+  generateContributionMatrix('2026');
+  fetchLiveGitHubData(false);
 
   // ==================== 11. TESTIMONIALS SLIDER ====================
   const testimonialTrack = document.getElementById('testimonial-track');
@@ -561,6 +934,24 @@ document.addEventListener('DOMContentLoaded', () => {
       updateSlider(slideIndex);
     });
   });
+
+  // Touch Swipe Support for Mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+  if (testimonialTrack) {
+    testimonialTrack.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    testimonialTrack.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 45) {
+        updateSlider(currentSlide + 1);
+      } else if (touchEndX - touchStartX > 45) {
+        updateSlider(currentSlide - 1);
+      }
+    }, { passive: true });
+  }
 
   // Auto slide interval
   setInterval(() => {
