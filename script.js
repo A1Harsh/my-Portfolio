@@ -266,8 +266,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   skillCategoryBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      skillCategoryBtns.forEach(b => b.classList.remove('active'));
+      skillCategoryBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
       btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
       filterSkills();
     });
   });
@@ -289,9 +293,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (skillsResetBtn) {
     skillsResetBtn.addEventListener('click', () => {
       if (skillsSearchInput) skillsSearchInput.value = '';
-      skillCategoryBtns.forEach(b => b.classList.remove('active'));
+      skillCategoryBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
       const allBtn = document.querySelector('.skill-category-selectors .skill-category-btn[data-category="all"]');
-      if (allBtn) allBtn.classList.add('active');
+      if (allBtn) {
+        allBtn.classList.add('active');
+        allBtn.setAttribute('aria-selected', 'true');
+      }
       filterSkills();
     });
   }
@@ -748,94 +758,6 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
   }
 
-  // 52-Week Matrix Generator with Interactive Tooltips
-  function generateContributionMatrix(selectedYear = '2026') {
-    if (!matrixGrid) return;
-    matrixGrid.innerHTML = '';
-
-    const daysCount = 52 * 7; // 364 days
-    const today = new Date();
-    const isCurrentYear = selectedYear === '2026';
-    const baseOffset = isCurrentYear ? 0 : 365;
-
-    let totalCalculatedContributions = 0;
-
-    for (let i = daysCount - 1; i >= 0; i--) {
-      const cellDate = new Date(today);
-      cellDate.setDate(today.getDate() - (i + baseOffset));
-      
-      const dayOfWeek = cellDate.getDay(); // 0 is Sunday, 6 is Saturday
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-
-      // Deterministic pseudo-random seed based on date
-      const dateSeed = (cellDate.getFullYear() * 10000 + (cellDate.getMonth() + 1) * 100 + cellDate.getDate()) % 100;
-      
-      let level = 0;
-      let count = 0;
-
-      if (dateSeed > 85) {
-        level = 4;
-        count = Math.floor(10 + (dateSeed % 6));
-      } else if (dateSeed > 65) {
-        level = 3;
-        count = Math.floor(6 + (dateSeed % 4));
-      } else if (dateSeed > 40 && !isWeekend) {
-        level = 2;
-        count = Math.floor(3 + (dateSeed % 3));
-      } else if (dateSeed > 15 && !isWeekend) {
-        level = 1;
-        count = Math.floor(1 + (dateSeed % 2));
-      } else {
-        level = 0;
-        count = 0;
-      }
-
-      totalCalculatedContributions += count;
-
-      const cell = document.createElement('div');
-      cell.className = `matrix-cell ${level > 0 ? `l-${level}` : ''}`;
-      cell.setAttribute('data-count', count);
-      cell.setAttribute('data-date', cellDate.toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      }));
-
-      // Mouse & Touch events for Tooltip
-      const showTooltip = (e) => {
-        if (!matrixTooltip) return;
-        const countVal = cell.getAttribute('data-count');
-        const dateVal = cell.getAttribute('data-date');
-        const countText = countVal === '0' ? 'No contributions' : `${countVal} contribution${countVal === '1' ? '' : 's'}`;
-
-        matrixTooltip.innerHTML = `<strong>${countText}</strong> on ${dateVal}`;
-        matrixTooltip.classList.remove('hidden');
-
-        const rect = cell.getBoundingClientRect();
-        const wrapperRect = matrixGrid.closest('.contribution-matrix-wrapper').getBoundingClientRect();
-        
-        matrixTooltip.style.left = `${rect.left - wrapperRect.left + (rect.width / 2)}px`;
-        matrixTooltip.style.top = `${rect.top - wrapperRect.top - 32}px`;
-      };
-
-      const hideTooltip = () => {
-        if (matrixTooltip) matrixTooltip.classList.add('hidden');
-      };
-
-      cell.addEventListener('mouseenter', showTooltip);
-      cell.addEventListener('mouseleave', hideTooltip);
-      cell.addEventListener('click', showTooltip);
-
-      matrixGrid.appendChild(cell);
-    }
-
-    const totalContribEl = document.getElementById('gh-total-contributions-count');
-    if (totalContribEl) {
-      totalContribEl.textContent = `${totalCalculatedContributions}+`;
-    }
-  }
-
   // Fetch Live GitHub Data from API
   async function fetchLiveGitHubData(forceRefresh = false) {
     const CACHE_KEY = 'harsh_gh_data_cache';
@@ -915,21 +837,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderRepoCards(finalRepos.slice(0, 4));
   }
 
-  // Heatmap View Toggle (Grid vs Snake)
-  const hmViewBtns = document.querySelectorAll('.hm-view-btn');
-  const matrixWrapper = document.getElementById('matrix-wrapper');
-  const snakeWrapper = document.getElementById('snake-wrapper');
-  const heatmapYearPills = document.getElementById('heatmap-year-pills');
-  const activityCardTitle = document.getElementById('activity-card-title');
+  // Snake Animation Theme Synchronizer
   const snakeImg = document.getElementById('snake-animation-img');
   const snakeFallback = document.getElementById('snake-fallback');
 
   function updateSnakeTheme() {
     if (!snakeImg) return;
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const darkUrl = 'https://raw.githubusercontent.com/A1Harsh/my-Portfolio/output/github-contribution-grid-snake-dark.svg';
-    const lightUrl = 'https://raw.githubusercontent.com/A1Harsh/my-Portfolio/output/github-contribution-grid-snake.svg';
-    snakeImg.src = isDark ? darkUrl : lightUrl;
+    snakeImg.src = darkUrl;
   }
 
   if (snakeImg && snakeFallback) {
@@ -943,49 +858,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  hmViewBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      hmViewBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const view = btn.getAttribute('data-view');
-
-      if (view === 'snake') {
-        if (matrixWrapper) matrixWrapper.classList.add('hidden');
-        if (snakeWrapper) snakeWrapper.classList.remove('hidden');
-        if (heatmapYearPills) heatmapYearPills.style.display = 'none';
-        if (activityCardTitle) activityCardTitle.textContent = 'Contribution Snake Animation (Live)';
-        updateSnakeTheme();
-      } else {
-        if (matrixWrapper) matrixWrapper.classList.remove('hidden');
-        if (snakeWrapper) snakeWrapper.classList.add('hidden');
-        if (heatmapYearPills) heatmapYearPills.style.display = 'flex';
-        if (activityCardTitle) activityCardTitle.textContent = 'Contribution Heatmap (52 Weeks)';
-      }
-    });
-  });
-
   // Watch for theme changes to update snake theme
   const observer = new MutationObserver(() => {
     updateSnakeTheme();
   });
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
-  // Heatmap Year Selector
-  hmYearBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      hmYearBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const year = btn.getAttribute('data-year');
-      generateContributionMatrix(year);
-    });
-  });
-
   if (ghRefreshBtn) {
     ghRefreshBtn.addEventListener('click', () => fetchLiveGitHubData(true));
   }
 
-  // Initial Matrix & GitHub Data Boot
-  generateContributionMatrix('2026');
+  // Initial Snake Theme & Live GitHub Data Boot
+  updateSnakeTheme();
   fetchLiveGitHubData(false);
 
   // ==================== 11. TESTIMONIALS SLIDER ====================
@@ -1199,5 +1083,46 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('online', () => {
     if (offlineToast) offlineToast.classList.add('hidden');
   });
+
+  // ==================== 16. MOBILE DOCK & ACTIVE SCROLL SPY ====================
+  const dockItems = document.querySelectorAll('.mobile-dock .dock-item');
+  const desktopNavLinks = document.querySelectorAll('.nav-links .nav-link');
+  const trackedSections = document.querySelectorAll('section[id], header[id]');
+
+  function onScrollSpy() {
+    let currentId = 'hero';
+    const scrollPosition = window.scrollY + 200;
+
+    trackedSections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      if (scrollPosition >= top && scrollPosition < top + height) {
+        currentId = section.getAttribute('id');
+      }
+    });
+
+    // Update Mobile Dock
+    dockItems.forEach(item => {
+      const sec = item.getAttribute('data-section');
+      if (sec === currentId) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
+    // Update Desktop Nav Links
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === `#${currentId}`) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', onScrollSpy, { passive: true });
+  onScrollSpy();
 
 });
